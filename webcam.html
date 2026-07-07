@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>กล้องเว็บแคปเจอร์ง่ายๆ</title>
+  <style>
+    /* Theme variables: light (default) and dark via [data-theme="dark"] */
+    :root {
+      --fg:#0f172a; --bg:#f8fafc; --muted:#64748b; --line:#e2e8f0;
+      --card-bg:#ffffff; --input-bg:#ffffff; --shadow:0 1px 2px rgba(0,0,0,.06);
+      --btn-primary:#111827; --btn-primary-fg:#ffffff;
+      --btn-danger:#dc2626; --btn-danger-fg:#ffffff;
+      --link:#0369a1;
+    }
+    [data-theme="dark"] {
+      --fg:#e8ecff; --bg:#0b1020; --muted:#b7c0ff99; --line:#1e2a5a;
+      --card-bg:#121b39; --input-bg:#0e1738; --shadow:0 2px 6px rgba(0,0,0,.4);
+      --btn-primary:#334155; --btn-primary-fg:#e8ecff;
+      --btn-danger:#ef4444; --btn-danger-fg:#fff;
+      --link:#6ee7ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Thai", sans-serif; color:var(--fg); background:var(--bg); }
+    .container { max-width: 980px; margin: 24px auto; padding: 0 16px; }
+    h1 { font-size: clamp(20px, 4vw, 28px); margin: 0 0 12px; }
+    .top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    p.note { color: var(--muted); margin-top: 0; }
+    .wrap { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 920px) { .wrap { grid-template-columns: 2fr 1fr; } }
+    .card { background:var(--card-bg); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow: var(--shadow); }
+    video, canvas { width: 100%; border-radius: 12px; background: #000; }
+    .controls { display:flex; flex-wrap:wrap; gap:8px; align-items: center; margin-top: 12px; }
+    .controls > * { height: 40px; border-radius: 12px; border:1px solid var(--line); padding: 0 10px; background:var(--input-bg); color:var(--fg); }
+    .btn { cursor:pointer; font-weight:600; }
+    .btn.primary { background:var(--btn-primary); color:var(--btn-primary-fg); border-color:var(--btn-primary); }
+    .btn.danger { background:var(--btn-danger); color:var(--btn-danger-fg); border-color:var(--btn-danger); }
+    .row { display:flex; gap:8px; flex-wrap:wrap; }
+    .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .mirror { transform: scaleX(-1); }
+    .hidden { display: none !important; }
+    label.small { font-size: 13px; color: var(--muted); }
+    .theme-toggle-btn { display:inline-flex; align-items:center; gap:8px; height:36px; padding:0 12px; background:var(--input-bg); color:var(--fg); border:1px solid var(--line); border-radius:999px; cursor:pointer; box-shadow:var(--shadow); font-weight:600; }
+    .theme-toggle-btn:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <h1>📸 กล้องเว็บแคปเจอร์ง่ายๆ</h1>
+      <button id="themeBtn" class="theme-toggle-btn" type="button" aria-label="สลับธีม">🌙 โหมดมืด</button>
+    </div>
+    <p class="note">ทำงานได้ดีที่สุดบน <b>HTTPS</b> หรือ <code>http://localhost</code>. เปิดจากไฟล์ตรงๆ (file://) อาจไม่ให้สิทธิ์กล้อง</p>
+
+    <div class="wrap">
+      <!-- Left: Live camera -->
+      <section class="card">
+        <video id="cam" playsinline autoplay muted></video>
+        <div class="controls">
+          <select id="deviceSel" title="เลือกกล้อง"></select>
+          <select id="resSel" title="เลือกความละเอียด">
+            <option value="1920x1080">1080p</option>
+            <option value="1280x720" selected>720p</option>
+            <option value="640x480">480p</option>
+          </select>
+          <label class="row" style="align-items:center; gap:6px; padding:0 8px; border:none">
+            <input type="checkbox" id="mirror" /> <span class="small">Mirror (กลับซ้าย-ขวา)</span>
+          </label>
+          <button id="startBtn" class="btn primary">เริ่มกล้อง</button>
+          <button id="stopBtn" class="btn danger" disabled>ปิดกล้อง</button>
+          <button id="shotBtn" class="btn" disabled>ถ่ายภาพ</button>
+          <a id="dl" class="btn" download="snapshot.png" aria-disabled="true">ดาวน์โหลด</a>
+        </div>
+        <div class="hint">💡 ทิป: มือถือมีหลายกล้อง ให้เลือกจากเมนู "เลือกกล้อง".</div>
+        <div id="err" class="hint" style="color:#dc2626"></div>
+      </section>
+
+      <!-- Right: Snapshot preview -->
+      <section class="card">
+        <h3 style="margin-top:0">ภาพที่ถ่ายไว้</h3>
+        <canvas id="shot" class="hidden"></canvas>
+        <p class="hint">กด “ถ่ายภาพ” เพื่อแคปเจอร์เฟรมจากวิดีโอ แล้วกด “ดาวน์โหลด”.</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+  // theme bootstrap
+  const THEME_KEY = 'site_theme_v1';
+  const userPref = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = userPref || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', initial);
+  const themeBtn = document.getElementById('themeBtn');
+  function setThemeLabel(mode){ themeBtn.textContent = (mode==='dark' ? '☀️ โหมดสว่าง' : '🌙 โหมดมืด'); }
+  setThemeLabel(initial);
+  themeBtn.addEventListener('click', ()=>{
+    const now = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', now);
+    localStorage.setItem(THEME_KEY, now);
+    setThemeLabel(now);
+  });
+
+  const cam = document.getElementById('cam');
+  const deviceSel = document.getElementById('deviceSel');
+  const resSel = document.getElementById('resSel');
+  const mirror = document.getElementById('mirror');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const shotBtn = document.getElementById('shotBtn');
+  const dl = document.getElementById('dl');
+  const shot = document.getElementById('shot');
+  const errBox = document.getElementById('err');
+
+  let currentStream = null;
+
+  async function listCams() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const cams = devices.filter(d => d.kind === 'videoinput');
+      deviceSel.innerHTML = '';
+      cams.forEach((d, i) => {
+        const opt = document.createElement('option');
+        opt.value = d.deviceId;
+        opt.textContent = d.label || `กล้อง ${i+1}`;
+        deviceSel.appendChild(opt);
+      });
+    } catch (e) {
+      showError(e);
+    }
+  }
+
+  function parseRes(v) {
+    const [w, h] = v.split('x').map(Number);
+    return { width: { ideal: w }, height: { ideal: h } };
+  }
+
+  function stopStream() {
+    if (currentStream) {
+      currentStream.getTracks().forEach(t => t.stop());
+      currentStream = null;
+    }
+    cam.srcObject = null;
+    stopBtn.disabled = true;
+    shotBtn.disabled = true;
+    startBtn.disabled = false;
+  }
+
+  async function startCam() {
+    stopStream();
+    errBox.textContent = '';
+    const devId = deviceSel.value || undefined;
+    const res = parseRes(resSel.value);
+    const constraints = { video: { ...res, deviceId: devId ? { exact: devId } : undefined, facingMode: devId ? undefined : { ideal: 'user' } }, audio: false };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      currentStream = stream;
+      cam.srcObject = stream;
+      await cam.play();
+      stopBtn.disabled = false;
+      shotBtn.disabled = false;
+      startBtn.disabled = true;
+      applyMirror();
+      // refresh labels after permission granted
+      listCams();
+    } catch (e) {
+      showError(e);
+    }
+  }
+
+  function applyMirror() {
+    cam.classList.toggle('mirror', mirror.checked);
+    shot.classList.toggle('mirror', mirror.checked);
+  }
+
+  function takeShot() {
+    if (!cam.videoWidth) return;
+    shot.width = cam.videoWidth;
+    shot.height = cam.videoHeight;
+    const ctx = shot.getContext('2d');
+    // If mirrored, draw flipped so saved image matches whatเห็น
+    if (mirror.checked) {
+      ctx.save();
+      ctx.translate(shot.width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(cam, 0, 0, shot.width, shot.height);
+      ctx.restore();
+    } else {
+      ctx.drawImage(cam, 0, 0, shot.width, shot.height);
+    }
+    shot.classList.remove('hidden');
+    const url = shot.toDataURL('image/png');
+    dl.href = url;
+    dl.setAttribute('download', `snapshot-${Date.now()}.png`);
+    dl.removeAttribute('aria-disabled');
+  }
+
+  function showError(e) {
+    console.error(e);
+    errBox.textContent = 'เกิดข้อผิดพลาด: ' + (e.message || e.name || e);
+  }
+
+  // events
+  mirror.addEventListener('change', applyMirror);
+  startBtn.addEventListener('click', startCam);
+  stopBtn.addEventListener('click', stopStream);
+  shotBtn.addEventListener('click', takeShot);
+  deviceSel.addEventListener('change', startCam);
+  resSel.addEventListener('change', startCam);
+
+  // boot
+  (async () => {
+    if (!('mediaDevices' in navigator) || !('getUserMedia' in navigator.mediaDevices)) {
+      showError('เบราว์เซอร์นี้ไม่รองรับกล้อง (getUserMedia)');
+      return;
+    }
+    await listCams();
+  })();
+  </script>
+</body>
+</html>

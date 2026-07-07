@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#e9d5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  <g transform="translate(640 360)" filter="url(#shadow)">
+    <rect x="-240" y="-180" width="480" height="360" rx="32" fill="#1e293b"/>
+    <rect x="-210" y="-150" width="420" height="260" rx="18" fill="#0f172a"/>
+    <!-- Grid -->
+    <g stroke="#334155" stroke-width="2">
+      <path d="M-190 -130 H210"/><path d="M-190 -100 H210"/><path d="M-190 -70 H210"/><path d="M-190 -40 H210"/><path d="M-190 -10 H210"/><path d="M-190 20 H210"/><path d="M-190 50 H210"/><path d="M-190 80 H210"/>
+      <path d="M-190 -130 V110"/><path d="M-160 -130 V110"/><path d="M-130 -130 V110"/><path d="M-100 -130 V110"/><path d="M-70 -130 V110"/><path d="M-40 -130 V110"/><path d="M-10 -130 V110"/><path d="M20 -130 V110"/><path d="M50 -130 V110"/><path d="M80 -130 V110"/><path d="M110 -130 V110"/><path d="M140 -130 V110"/><path d="M170 -130 V110"/><path d="M200 -130 V110"/>
+    </g>
+    <!-- Snake -->
+    <g fill="#10b981" stroke="#065f46" stroke-width="4">
+      <rect x="-160" y="-40" width="30" height="30" rx="6"/>
+      <rect x="-130" y="-40" width="30" height="30" rx="6"/>
+      <rect x="-100" y="-40" width="30" height="30" rx="6"/>
+      <rect x="-70" y="-40" width="30" height="30" rx="6"/>
+      <rect x="-70" y="-10" width="30" height="30" rx="6"/>
+      <rect x="-70" y="20" width="30" height="30" rx="6"/>
+      <rect x="-40" y="20" width="30" height="30" rx="6"/>
+      <rect x="-10" y="20" width="30" height="30" rx="6"/>
+      <rect x="20" y="20" width="30" height="30" rx="6"/>
+      <rect x="50" y="20" width="30" height="30" rx="6"/>
+      <rect x="80" y="20" width="30" height="30" rx="6"/>
+      <!-- head -->
+      <rect x="110" y="20" width="30" height="30" rx="6" fill="#34d399" stroke="#059669"/>
+      <circle cx="118" cy="30" r="4" fill="#0f172a"/>
+      <circle cx="132" cy="30" r="4" fill="#0f172a"/>
+    </g>
+    <!-- Apple -->
+    <g>
+      <circle cx="40" cy="-80" r="16" fill="#ef4444" stroke="#991b1b" stroke-width="4"/>
+      <path d="M40 -96 Q42 -100 46 -102" stroke="#14532d" stroke-width="4" fill="none"/>
+      <circle cx="46" cy="-102" r="4" fill="#16a34a"/>
+    </g>
+  </g>
+  <text x="640" y="650" font-family="'Poppins', 'Prompt', system-ui" font-size="44" text-anchor="middle" fill="#1e293b" opacity="0.9">Snake Game (Django)</text>
+</svg>
