@@ -1,0 +1,112 @@
+name: Update portfolio profile content
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/update-profile-content.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update profile content
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          original = html
+
+          replacements = {
+              'Portfolio ของ Khanathippakorn Namthachak - Computer Engineering Student | Full-Stack, IoT & Digital Twin Enthusiast':
+              'Portfolio ของ Khanathippakorn Namthachak (First) - Computer Engineering Student | Full-Stack Web Developer | IoT, AI & Cybersecurity Learner',
+
+              'Computer Engineering Student · IoT Enthusiast · Web & Application Developer · Digital Twin Learner':
+              'Computer Engineering Student · Full-Stack Web Developer · IoT & AI Builder · Cybersecurity Learner',
+
+              'Computer Engineering Student</div>':
+              'Computer Engineering Student · RMUTI Khon Kaen</div>',
+
+              'นักศึกษาคณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ มีความสนใจด้านระบบ IoT\n          การพัฒนาเว็บแอปพลิเคชัน และการออกแบบระบบที่เชื่อมโยงทั้งซอฟต์แวร์และฮาร์ดแวร์เข้าด้วยกัน':
+              'นักศึกษาวิศวกรรมคอมพิวเตอร์ มทร.อีสาน วิทยาเขตขอนแก่น โฟกัสงาน Full-Stack Web, IoT, AI, Cybersecurity\n          และการออกแบบระบบที่เชื่อมโยงซอฟต์แวร์ ฮาร์ดแวร์ ข้อมูล และผู้ใช้งานจริงเข้าด้วยกัน',
+
+              'มีประสบการณ์ในการพัฒนาโปรเจกต์ด้านซอฟต์แวร์และฮาร์ดแวร์เบื้องต้น โดยเฉพาะงานเว็บระบบ\n              ระบบจัดการข้อมูล และแนวคิด Digital Twin สามารถออกแบบและพัฒนาระบบที่นำไปใช้ได้จริง\n              โดยเฉพาะในด้านสุขภาพ ระบบอัตโนมัติ และสภาพแวดล้อมอัจฉริยะ':
+              'ฉันชื่อ First หรือ Khanathippakorn Namthachak สนใจการพัฒนาเว็บแอป ระบบหลังบ้าน ฐานข้อมูล IoT และ AI\n              มีประสบการณ์ทำโปรเจกต์จริง เช่น ระบบคิวโรงพยาบาล, เว็บพอร์ตโฟลิโอ, เว็บแอปจัดการข้อมูล, IoT Dashboard\n              รวมถึงการ deploy เว็บไซต์ด้วย GitHub Pages, Firebase, Vercel และ Netlify',
+
+              'พร้อมเรียนรู้เทคโนโลยีใหม่ ๆ อย่างรวดเร็ว มีประสบการณ์ทำงานร่วมกับผู้อื่นแบบเป็นทีม\n              และสามารถวิเคราะห์ แก้ไขปัญหา ทดสอบระบบ และปรับปรุงงานอย่างต่อเนื่อง':
+              'กำลังต่อยอดทักษะด้าน Cybersecurity, Docker, Flutter, Django, REST API และ Local AI Assistant\n              จุดแข็งคือชอบลงมือทำจริง แก้ปัญหาเร็ว ทดสอบระบบเอง และพัฒนาโปรเจกต์จากไอเดียให้กลายเป็นงานที่ใช้งานได้จริง',
+
+              '<li><i class="bi bi-globe2"></i> Website: <a href="https://bfirstkok.netlify.app/" target="_blank" rel="noopener">Portfolio Website</a></li>':
+              '<li><i class="bi bi-globe2"></i> Website: <a href="https://bfirstkok.me/" target="_blank" rel="noopener">bfirstkok.me</a></li>',
+
+              '<a href="https://bfirstkok.netlify.app/" target="_blank" rel="noopener" title="Website" aria-label="Website">':
+              '<a href="https://bfirstkok.me/" target="_blank" rel="noopener" title="Website" aria-label="Website">',
+
+              '<div><a href="https://bfirstkok.netlify.app/" target="_blank" rel="noopener">Portfolio Website</a></div>':
+              '<div><a href="https://bfirstkok.me/" target="_blank" rel="noopener">bfirstkok.me</a></div>',
+
+              '<span class="chip primary">IoT</span>\n              <span class="chip">ESP32</span>\n              <span class="chip">Digital Twin</span>\n              <span class="chip">Next.js / React</span>\n              <span class="chip">Spring Boot</span>\n              <span class="chip">Node.js</span>\n              <span class="chip">REST API</span>\n              <span class="chip">MySQL / MariaDB</span>':
+              '<span class="chip primary">Full-Stack Web</span>\n              <span class="chip">IoT / ESP32</span>\n              <span class="chip">AI Integration</span>\n              <span class="chip">Cybersecurity</span>\n              <span class="chip">Django / Python</span>\n              <span class="chip">React / Next.js</span>\n              <span class="chip">Docker</span>\n              <span class="chip">MySQL / MariaDB</span>',
+
+              '<span class="chip">XAMPP / PHPMyAdmin</span>\n              <span class="chip">HTTP / REST API</span>\n              <span class="chip">Digital Twin Simulation</span>\n              <span class="chip">Wokwi</span>':
+              '<span class="chip">XAMPP / PHPMyAdmin</span>\n              <span class="chip">HTTP / REST API</span>\n              <span class="chip">Docker / Linux</span>\n              <span class="chip">Flutter Mobile App</span>',
+
+              '<span class="chip">IoT / Embedded Systems</span>\n               <span class="chip">Sensor Integration</span>\n               <span class="chip">System Testing</span>\n               <span class="chip">Problem Solving</span>':
+              '<span class="chip">IoT / Embedded Systems</span>\n               <span class="chip">Sensor Integration</span>\n               <span class="chip">Network / Cyber Lab</span>\n               <span class="chip">Problem Solving</span>',
+
+              '<div>สนใจงาน software dev , fullstack ,IoT, Network และ Web Application</div>':
+              '<div>สนใจงาน Software Development, Full-Stack, IoT, AI, Cybersecurity, Network และ Web Application</div>',
+
+              '<div>สามารถพัฒนาระบบต้นแบบและปรับปรุงจนใช้งานได้จริง</div>':
+              '<div>สามารถพัฒนาระบบต้นแบบ เชื่อม API จัดการฐานข้อมูล deploy และปรับปรุงจนใช้งานได้จริง</div>',
+
+              '© 2026 Khanathippakorn Namthachak · Portfolio':
+              '© 2026 Khanathippakorn Namthachak (First) · bfirstkok.me Portfolio',
+
+              'สวัสดี! ฉันชื่อ Khanathippakorn Namthachak (เรียกสั้นว่า \'Thippakorn\' ได้ค่ะ) นักศึกษาคณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ชั้นปีที่ 3 จากมหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน วิทยาเขตขอนแก่น\n\nฉันถนัดด้านพัฒนา IoT, Web Application, และ Digital Twin ด้วย Python, JavaScript และภาษาอื่น ๆ 🚀':
+              'สวัสดี! ฉันชื่อ Khanathippakorn Namthachak เรียกสั้น ๆ ว่า First ได้ค่ะ เป็นนักศึกษาวิศวกรรมคอมพิวเตอร์จากมหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน วิทยาเขตขอนแก่น\n\nฉันสนใจ Full-Stack Web, IoT, AI, Cybersecurity, Network และการทำโปรเจกต์ที่นำไปใช้งานจริง 🚀',
+
+              '🌐 Website: dancing-melba-1c610c.netlify.app':
+              '🌐 Website: https://bfirstkok.me',
+
+              '• Web Application (React, Next.js)\n• IoT Projects (ESP32, Arduino)\n• Python Scripts (Data Processing)\n• Digital Twin Simulations\n• REST API Development':
+              '• Web Application (React, Next.js, Django)\n• IoT Projects (ESP32, Arduino)\n• AI / Local AI Assistant Projects\n• Cybersecurity & Network Labs\n• REST API / Database / Docker Projects',
+
+              '🏥 Healthcare Intelligence System\n• Web-based record management\n• IoT sensor integration\n• Real-time data monitoring\n\n🌐 Smart IoT Environment\n• ESP32-based sensors\n• Cloud data streaming\n• Dashboard visualization\n\n🔗 Digital Twin Simulation\n• Process modeling\n• System optimization\n• Performance analysis\n\n💻 Web Applications\n• Full-stack development\n• Database management\n• User interface design':
+              '🏥 Healthcare Queue & AI Triage System\n• Patient registration and priority queue\n• Database and dashboard workflow\n• AI/ML-ready screening concept\n\n🌐 Portfolio & Web Applications\n• GitHub Pages custom domain\n• Firebase / Vercel / Netlify deployment\n• Responsive UI and project showcase\n\n🔌 IoT Dashboard Projects\n• ESP32 and sensor data\n• Real-time monitoring concept\n• REST API integration\n\n🛡️ Cybersecurity / Network Lab\n• Linux, Docker, WSL, Nmap, basic CTF workflow\n• Documentation and write-up practice'
+          }
+
+          for old, new in replacements.items():
+              if old in html:
+                  html = html.replace(old, new)
+              else:
+                  print('MISS:', old[:80].replace('\n', ' '))
+
+          if html == original:
+              print('No changes needed.')
+          else:
+              path.write_text(html, encoding='utf-8')
+              print('Updated index.html')
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add index.html
+            git commit -m "Update portfolio profile information"
+            git push
+          fi
