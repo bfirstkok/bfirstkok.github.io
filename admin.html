@@ -11,15 +11,15 @@
     *{box-sizing:border-box} body{margin:0;font-family:Prompt,sans-serif;background:radial-gradient(circle at top left,rgba(0,229,255,.12),transparent 28%),var(--bg);color:var(--text)}
     .wrap{width:min(1180px,92vw);margin:0 auto;padding:34px 0 80px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px}.brand h1{margin:0;font-size:clamp(26px,4vw,44px)}.brand p{margin:8px 0 0;color:var(--muted)}
     .status{padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--muted);margin:16px 0}.status.ok{color:var(--ok);border-color:rgba(34,197,94,.3)}.status.error{color:var(--danger);border-color:rgba(239,68,68,.3)}.status.warn{color:var(--warn);border-color:rgba(245,158,11,.3)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:rgba(16,24,39,.86);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
-    label{display:block;margin:12px 0 6px;color:#dbeafe;font-weight:600}input,textarea{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-family:inherit}textarea{min-height:120px;resize:vertical}.hint{font-size:13px;color:var(--muted);line-height:1.7}button,.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:12px 16px;background:linear-gradient(135deg,#00e5ff,#7c3aed);color:white;font-weight:700;cursor:pointer;text-decoration:none;font-family:inherit}button.secondary{background:rgba(255,255,255,.08);border:1px solid var(--line)}button.danger{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.3);color:#fecaca}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.admin-card{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;background:rgba(255,255,255,.035)}.admin-card img{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:10px}.admin-card h3{margin:0 0 8px}.admin-card p{color:var(--muted);line-height:1.7}.row-actions{display:flex;gap:8px}.notice{border:1px dashed rgba(0,229,255,.3);background:rgba(0,229,255,.06);padding:16px;border-radius:18px;margin-bottom:18px;color:#dffbff;line-height:1.8}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.full{grid-column:1/-1}.card{background:rgba(16,24,39,.86);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+    label{display:block;margin:12px 0 6px;color:#dbeafe;font-weight:600}input,textarea{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-family:inherit}textarea{min-height:110px;resize:vertical}.hint{font-size:13px;color:var(--muted);line-height:1.7}button,.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:12px 16px;background:linear-gradient(135deg,#00e5ff,#7c3aed);color:white;font-weight:700;cursor:pointer;text-decoration:none;font-family:inherit}button.secondary{background:rgba(255,255,255,.08);border:1px solid var(--line)}button.danger{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.3);color:#fecaca}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.admin-card{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;background:rgba(255,255,255,.035)}.admin-card img{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:10px}.admin-card h3{margin:0 0 8px}.admin-card p{color:var(--muted);line-height:1.7}.row-actions{display:flex;gap:8px}.notice{border:1px dashed rgba(0,229,255,.3);background:rgba(0,229,255,.06);padding:16px;border-radius:18px;margin-bottom:18px;color:#dffbff;line-height:1.8}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.tabs a{color:#dffbff;text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:10px 12px;border-radius:999px}.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:900px){.grid,.mini-grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
   <main class="wrap">
     <div class="top">
-      <div class="brand"><h1>Portfolio Admin</h1><p>แก้ข่าวสารและ Certificate ของ bfirstkok.me โดยไม่ต้องแก้โค้ด</p></div>
+      <div class="brand"><h1>Portfolio Admin</h1><p>แก้ข้อมูลหน้าเว็บ bfirstkok.me โดยไม่ต้องแก้โค้ด</p></div>
       <a class="btn" href="index.html"><i class="bi bi-house-door"></i> กลับหน้าเว็บ</a>
     </div>
 
@@ -42,8 +42,61 @@
     <section id="adminApp" hidden>
       <div class="notice">เข้าสู่ระบบเป็น <b id="adminEmailText"></b> แล้ว สามารถเพิ่ม แก้ไข และลบข้อมูลได้</div>
       <div class="actions" style="margin-bottom:18px"><button id="logoutBtn" class="secondary"><i class="bi bi-box-arrow-right"></i> ออกจากระบบ</button></div>
+      <nav class="tabs">
+        <a href="#profileEditor">โปรไฟล์ / About</a>
+        <a href="#projectEditor">Projects</a>
+        <a href="#newsEditor">ข่าวสาร</a>
+        <a href="#certEditor">Certificate</a>
+      </nav>
+
       <div class="grid">
-        <section class="card">
+        <section id="profileEditor" class="card full">
+          <h2>โปรไฟล์ / หัวข้อหน้าแรก / ติดต่อ / Skills</h2>
+          <p class="hint">ส่วนนี้จะไปแทนข้อความใน Hero, About, Contact และ Skill chips บนหน้าแรก</p>
+          <form id="profileForm">
+            <div class="mini-grid">
+              <div><label>ชื่อหลัก</label><input id="profileName" placeholder="Khanathippakorn Namthachak"></div>
+              <div><label>Subtitle หน้าแรก</label><input id="profileSubtitle" placeholder="Computer Engineering Student · Full-Stack..."></div>
+            </div>
+            <label>คำอธิบายสั้นใน About</label><textarea id="profileLead"></textarea>
+            <label>About ย่อหน้า 1</label><textarea id="profileAbout1"></textarea>
+            <label>About ย่อหน้า 2</label><textarea id="profileAbout2"></textarea>
+            <div class="mini-grid">
+              <div><label>โทร</label><input id="profilePhone"></div>
+              <div><label>อีเมลหลัก</label><input id="profileEmail" type="email"></div>
+              <div><label>อีเมลสำรอง</label><input id="profileAltEmail" type="email"></div>
+              <div><label>ที่อยู่</label><input id="profileLocation"></div>
+              <div><label>GitHub URL</label><input id="profileGithub" type="url"></div>
+              <div><label>Website URL</label><input id="profileWebsite" type="url"></div>
+              <div><label>Facebook URL</label><input id="profileFacebook" type="url"></div>
+              <div><label>Footer</label><input id="profileFooter"></div>
+            </div>
+            <label>Skill chips คั่นด้วย comma</label><input id="profileSkills" placeholder="Full-Stack Web, IoT / ESP32, AI Integration">
+            <div class="actions"><button type="submit"><i class="bi bi-save"></i> บันทึกโปรไฟล์</button></div>
+          </form>
+        </section>
+
+        <section id="projectEditor" class="card full">
+          <h2>Projects / ผลงาน</h2>
+          <form id="projectForm">
+            <div class="mini-grid">
+              <div><label>ชื่อโปรเจกต์</label><input id="projectTitle" required></div>
+              <div><label>หมวดหมู่</label><input id="projectCategory" placeholder="web, iot, health"></div>
+            </div>
+            <label>คำอธิบาย</label><textarea id="projectDesc" required></textarea>
+            <label>Features / จุดเด่น คั่นด้วย comma</label><input id="projectFeatures" placeholder="React, Firebase, Web App">
+            <div class="mini-grid">
+              <div><label>GitHub URL</label><input id="projectGithub" type="url"></div>
+              <div><label>Website URL</label><input id="projectWebsite" type="url"></div>
+              <div><label>Emoji/Icon</label><input id="projectIcon" placeholder="🚀"></div>
+              <div><label>ลำดับแสดงผล</label><input id="projectOrder" type="number" value="0"></div>
+            </div>
+            <div class="actions"><button id="projectSubmit" type="submit"><i class="bi bi-save"></i> บันทึก Project</button></div>
+          </form>
+          <h3>รายการ Projects</h3><div id="projectList"></div>
+        </section>
+
+        <section id="newsEditor" class="card">
           <h2>ข่าวสาร / อัปเดต</h2>
           <form id="newsForm">
             <label>หัวข้อข่าว</label><input id="newsTitle" required placeholder="เช่น พัฒนาเว็บแอปใหม่">
@@ -58,7 +111,7 @@
           <h3>รายการข่าว</h3><div id="newsList"></div>
         </section>
 
-        <section class="card">
+        <section id="certEditor" class="card">
           <h2>Certificate</h2>
           <form id="certForm">
             <label>ชื่อ Certificate</label><input id="certTitle" required placeholder="เช่น CABLING CONTEST">
