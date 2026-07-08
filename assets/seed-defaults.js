@@ -1,7 +1,7 @@
 import { firebaseConfig } from '../firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
-import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+import { getFirestore, doc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -33,10 +33,90 @@ const profile = {
 };
 
 const projects = [
-  { id: 'healthcare-queue-ai-triage', icon: '🏥', title: 'Healthcare Queue & AI Triage System', category: 'health', order: 1, description: 'ระบบลงทะเบียนผู้ป่วย คัดกรองอาการ และจัดคิวตามความเร่งด่วน เพื่อช่วยให้การทำงานของโรงพยาบาลเป็นระบบขึ้น', features: ['Healthcare', 'Queue', 'AI Triage', 'Dashboard'], githubUrl: '', websiteUrl: '' },
-  { id: 'portfolio-bfirstkok', icon: '🌐', title: 'Personal Portfolio Website', category: 'web', order: 2, description: 'เว็บไซต์พอร์ตโฟลิโอส่วนตัวพร้อม custom domain bfirstkok.me และระบบ Admin สำหรับแก้ไขข้อมูลผ่าน Firebase', features: ['HTML', 'CSS', 'JavaScript', 'Firebase', 'GitHub Pages'], githubUrl: 'https://github.com/bfirstkok/bfirstkok.github.io', websiteUrl: 'https://bfirstkok.me/' },
-  { id: 'iot-dashboard', icon: '🔌', title: 'IoT Dashboard Project', category: 'iot', order: 3, description: 'แนวคิดระบบ dashboard สำหรับแสดงข้อมูลจาก ESP32 และ sensor แบบ real-time พร้อมเชื่อมต่อ API', features: ['IoT', 'ESP32', 'Sensor', 'REST API'], githubUrl: '', websiteUrl: '' },
-  { id: 'cybersecurity-network-lab', icon: '🛡️', title: 'Cybersecurity & Network Lab', category: 'cyber', order: 4, description: 'งานแลปด้าน Linux, Docker, WSL, Nmap, Network และการเขียน write-up สำหรับการแข่งขัน/การฝึกซ้อม Cybersecurity', features: ['Linux', 'Docker', 'Nmap', 'CTF', 'Write-up'], githubUrl: '', websiteUrl: '' }
+  {
+    id: 'project-hospital-queue',
+    icon: '🏥',
+    title: 'ระบบติดตามผู้ป่วยและจัดการคิว',
+    category: 'health,web',
+    meta: 'โครงงานหลัก / โรงพยาบาล',
+    badge: 'Healthcare System',
+    order: 1,
+    description: 'พัฒนาระบบติดตามผู้ป่วยและจัดการคิวที่เชื่อมโยงข้อมูลทางการแพทย์เบื้องต้น ระบบคัดกรอง และลำดับผู้ป่วยแบบอัตโนมัติ',
+    features: ['พัฒนาเว็บแอปสำหรับติดตามและจัดการลำดับผู้ป่วยในสถานพยาบาล', 'สร้างฐานข้อมูลคนไข้ การลงทะเบียน และแสดงผลสถานะการคัดกรอง', 'ออกแบบส่วนสำหรับบันทึกอาการเบื้องต้นและเชื่อมต่อข้อมูลผู้ป่วย', 'พัฒนา Backend ฐานข้อมูล และส่วนติดต่อผู้ใช้ เพื่อรองรับการใช้งานแบบ AI/ML ในระบบ'],
+    tags: ['Healthcare', 'Web Application', 'Database Design', 'AI/ML Support'],
+    githubUrl: 'https://github.com/bfirstkok/Project_hospital_queue',
+    websiteUrl: ''
+  },
+  {
+    id: 'smart-medicine-storage-room',
+    icon: '💊',
+    title: 'Smart Medicine Storage Room',
+    category: 'iot',
+    meta: 'โครงงาน IoT + Digital Twin',
+    badge: 'IoT Project',
+    order: 2,
+    description: 'พัฒนาระบบห้องเก็บยาอัจฉริยะด้วย ESP32 และเซนเซอร์สำหรับตรวจวัดสภาพแวดล้อม พร้อมแสดงผลและควบคุมผ่าน Dashboard และแนวคิด Digital Twin',
+    features: ['พัฒนาระบบห้องเก็บยาจำลองด้วย ESP32 และเซนเซอร์สำหรับตรวจวัดสภาพแวดล้อม', 'เชื่อมต่อข้อมูลแบบเรียลไทม์ผ่าน API และพัฒนาแดชบอร์ดติดตามสถานะ', 'วิเคราะห์และจำลองพฤติกรรมของระบบด้วยแนวคิด Digital Twin'],
+    tags: ['ESP32', 'IoT', 'Dashboard', 'Digital Twin', 'REST API'],
+    githubUrl: 'https://github.com/bfirstkok/Smart-Medicine-Room-_-ESP32',
+    websiteUrl: ''
+  },
+  {
+    id: 'dino-forum-web-application',
+    icon: '🦖',
+    title: 'Dino Forum Web Application',
+    category: 'web',
+    meta: 'โครงงานพัฒนาเว็บ',
+    badge: 'Web Project',
+    order: 3,
+    description: 'พัฒนาระบบเว็บบอร์ดด้วย Django สำหรับการตั้งกระทู้ ตอบกลับ และจัดการเนื้อหา พร้อมระบบสมาชิกและการแสดงผลแบบ Responsive',
+    features: ['พัฒนาเว็บบอร์ดด้วย Django โดยมีการจัดการหมวดหมู่ผู้ใช้และการตั้งกระทู้', 'สร้างระบบล็อกอินและส่วนติดต่อผู้ใช้ที่รองรับการใช้งานบนหลายอุปกรณ์', 'พัฒนาแอปฝึกฝนและต่อยอดทักษะจาก Web Programming, Spring Boot, ESP32 และระบบเว็บโดยรวม'],
+    tags: ['Django', 'Web Programming', 'Responsive UI', 'Authentication'],
+    githubUrl: 'https://github.com/bfirstkok/Dino-forum',
+    websiteUrl: ''
+  },
+  {
+    id: 'omyno-cash-flow',
+    icon: '💸',
+    title: 'OmyNo Cash Flow',
+    category: 'web',
+    meta: 'Web Application / Statement & Cash Flow Management',
+    badge: 'Web Project',
+    order: 4,
+    description: 'เว็บแอปสำหรับช่วยทำและจัดการ statement/cash flow ให้ใช้งานได้จริงบนเว็บ พร้อมจัดเก็บซอร์สโค้ดบน GitHub และ deploy ผ่าน Firebase Hosting',
+    features: ['พัฒนาเว็บแอปสำหรับจัดการข้อมูล statement และ cash flow ในรูปแบบที่ใช้งานง่าย', 'ออกแบบหน้าจอสำหรับบันทึก ตรวจสอบ และสรุปข้อมูลการเงินส่วนบุคคลหรือโปรเจกต์', 'Deploy เป็นเว็บไซต์จริงเพื่อให้เปิดใช้งานและทดสอบผ่านเบราว์เซอร์ได้ทันที'],
+    tags: ['Web Application', 'Cash Flow', 'Statement', 'Firebase Hosting'],
+    githubUrl: 'https://github.com/bfirstkok/web_MakeStatement',
+    websiteUrl: 'https://omynocashflow.web.app/'
+  },
+  {
+    id: 'store-stoke-system',
+    icon: '📦',
+    title: 'StoreStokeSystem',
+    category: 'web',
+    meta: 'Store Stock Management System',
+    badge: 'Web Project',
+    order: 5,
+    description: 'ระบบสำหรับจัดการสต๊อกสินค้าในร้าน ช่วยบันทึกข้อมูลสินค้า ตรวจสอบจำนวนคงเหลือ และวางโครงสร้างสำหรับการติดตามรายการรับเข้า/จ่ายออกของสินค้า',
+    features: ['พัฒนาระบบจัดการข้อมูลสินค้าและจำนวนสต๊อกสำหรับงานร้านค้าหรือคลังขนาดเล็ก', 'วางโครงสร้างการทำงานสำหรับเพิ่ม แก้ไข ตรวจสอบ และติดตามสถานะสินค้า', 'ฝึกออกแบบ workflow ระบบจัดการข้อมูลที่ต่อยอดเป็น dashboard หรือระบบหลังบ้านได้'],
+    tags: ['Stock Management', 'Inventory', 'Web Application', 'CRUD'],
+    githubUrl: 'https://github.com/bfirstkok/StoreStokeSystem',
+    websiteUrl: 'https://store-stoke-system.vercel.app/'
+  },
+  {
+    id: 'otoverse',
+    icon: '🎵',
+    title: 'OtoVerse',
+    category: 'web',
+    meta: 'โปรเจกต์ Web Application / Anime Music Quiz Platform',
+    badge: 'Web Project',
+    order: 6,
+    description: 'พัฒนาเว็บเกมทายเพลงอนิเมะ OP/ED พร้อมคลังข้อมูลเพลง ฟีเจอร์โซเชียล ระบบจัดอันดับผู้เล่น โปรไฟล์ผู้ใช้ และการแชร์ผลลัพธ์ โดยพัฒนาด้วย React, Vite, TailwindCSS และ Firebase',
+    features: ['พัฒนาเกมทายเพลงอนิเมะที่รองรับหลายโหมด เช่น ปกติ, Daily Challenge, Favorites และเล่นกลุ่ม', 'ออกแบบระบบ Community, Chat, Profile และ Leaderboard เพื่อเพิ่มประสบการณ์ผู้ใช้', 'เชื่อมต่อ Firebase Authentication, Firestore และ Storage สำหรับจัดการข้อมูลและผู้ใช้งาน', 'Deploy ใช้งานจริงบนเว็บไซต์และเชื่อมโดเมนสำหรับโปรเจกต์'],
+    tags: ['Web Application', 'React', 'Vite', 'TailwindCSS', 'Firebase', 'Game Project'],
+    githubUrl: 'https://github.com/bfirstkok/OtoVerse',
+    websiteUrl: 'https://otoverse.games/'
+  }
 ];
 
 const news = [
@@ -51,18 +131,24 @@ const certificates = [
   { id: 'cloud-database-firebase', title: 'Cloud / Database / Firebase', category: 'Backend / Data', status: 'รออัปเดต', description: 'ใบรับรองด้าน Cloud, Database, Firebase, API หรือระบบ backend ที่เกี่ยวข้องกับการจัดการข้อมูล' }
 ];
 
+async function replaceCollection(name, rows) {
+  const snap = await getDocs(collection(db, name));
+  for (const oldDoc of snap.docs) await deleteDoc(doc(db, name, oldDoc.id));
+  for (const item of rows) await setDoc(doc(db, name, item.id), { ...item, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+}
+
 async function seedDefaults() {
   const btn = byId('seedDefaultsBtn');
   try {
     if (btn) { btn.disabled = true; btn.textContent = 'กำลังนำเข้า...'; }
-    setStatus('กำลังนำข้อมูลเดิมเข้า Firebase...', 'info');
+    setStatus('กำลังซิงก์ข้อมูลเดิมเข้า Firebase...', 'info');
 
     await setDoc(doc(db, 'site', 'profile'), { ...profile, updatedAt: serverTimestamp() }, { merge: true });
-    for (const item of projects) await setDoc(doc(db, 'projects', item.id), { ...item, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
-    for (const item of news) await setDoc(doc(db, 'news', item.id), { ...item, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
-    for (const item of certificates) await setDoc(doc(db, 'certificates', item.id), { ...item, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+    await replaceCollection('projects', projects);
+    await replaceCollection('news', news);
+    await replaceCollection('certificates', certificates);
 
-    setStatus('นำข้อมูลเดิมเข้า Firebase แล้ว กำลังรีเฟรชรายการ...', 'ok');
+    setStatus('ซิงก์ข้อมูลเดิมเข้า Firebase แล้ว กำลังรีเฟรชรายการ...', 'ok');
     setTimeout(() => window.location.reload(), 900);
   } catch (err) {
     console.error(err);
@@ -77,7 +163,7 @@ function installSeedPanel() {
   if (!adminApp) return;
   const panel = document.createElement('div');
   panel.className = 'notice';
-  panel.innerHTML = '<b>ข้อมูลเดิมยังไม่ขึ้น?</b><br>กดปุ่มนี้ 1 ครั้งเพื่อคัดลอกข้อมูลเดิมเข้า Firebase จากนั้นระบบจะรีเฟรช แล้วรายการจะขึ้นให้กดแก้ไขได้เหมือนโพสต์ Facebook<br><div class="actions"><button id="seedDefaultsBtn" type="button"><i class="bi bi-cloud-upload"></i> นำข้อมูลเดิมเข้า Admin</button></div>';
+  panel.innerHTML = '<b>ต้องการให้รายการ Admin ตรงกับหน้าเว็บจริง?</b><br>กดปุ่มนี้เพื่อซิงก์ข้อมูลเดิมจากหน้าเว็บเข้า Firebase โดยเฉพาะ Projects จะถูกปรับเป็นชุดเดียวกับ Section ผลงานและโครงงานจริง<br><div class="actions"><button id="seedDefaultsBtn" type="button"><i class="bi bi-cloud-upload"></i> ซิงก์ข้อมูลเดิมเข้า Admin</button></div>';
   const tabs = adminApp.querySelector('.tabs');
   adminApp.insertBefore(panel, tabs);
   byId('seedDefaultsBtn').addEventListener('click', seedDefaults);
