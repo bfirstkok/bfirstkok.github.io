@@ -14,12 +14,6 @@ function add(el, tag, className, value) {
   return node;
 }
 
-function setLink(a, url, label) {
-  if (!a || !url) return;
-  a.href = url;
-  if (label) a.textContent = label;
-}
-
 async function renderProfile(db) {
   const snap = await getDoc(doc(db, 'site', 'profile'));
   if (!snap.exists()) return;
@@ -47,7 +41,7 @@ async function renderProfile(db) {
     ];
     rows.forEach(([icon, label, url, linkText]) => {
       const li = add(facts, 'li');
-      const i = add(li, 'i', `bi ${icon}`);
+      add(li, 'i', `bi ${icon}`);
       if (url && linkText) {
         li.append(document.createTextNode(label));
         const a = add(li, 'a', '', linkText);
@@ -80,35 +74,6 @@ async function renderProfile(db) {
   if (contactItems[4]) { contactItems[4].innerHTML = ''; const a = add(contactItems[4], 'a', '', data.websiteUrl || ''); a.href = data.websiteUrl || '#'; a.target = '_blank'; a.rel = 'noopener'; }
 
   text(document.querySelector('footer'), data.footer);
-}
-
-function projectCard(item) {
-  const article = document.createElement('article');
-  article.className = 'project-card project-item';
-  article.dataset.cat = item.category || 'web';
-  const head = add(article, 'div', 'project-head');
-  const left = add(head, 'div');
-  const title = add(left, 'h3', 'item-title', `${item.icon || '🚀'} ${item.title || 'Project'}`);
-  title.style.margin = '0';
-  add(left, 'div', 'meta', item.category || 'Project');
-  add(head, 'div', 'date-badge', 'Admin Project');
-  add(article, 'p', '', item.description || '');
-  const tags = add(article, 'div', 'project-tags');
-  tags.style.marginTop = '12px';
-  (item.features || []).forEach(feature => add(tags, 'span', 'project-tag', feature));
-  const actions = add(article, 'div', 'actions');
-  if (item.websiteUrl) { const a = add(actions, 'a', 'action-btn', 'Website'); a.href = item.websiteUrl; a.target = '_blank'; a.rel = 'noopener'; }
-  if (item.githubUrl) { const a = add(actions, 'a', 'action-btn alt', 'GitHub'); a.href = item.githubUrl; a.target = '_blank'; a.rel = 'noopener'; }
-  return article;
-}
-
-async function renderProjects(db) {
-  const grid = document.querySelector('#projects .portfolio-grid');
-  if (!grid) return;
-  const snap = await getDocs(query(collection(db, 'projects'), orderBy('order', 'asc')));
-  if (snap.empty) return;
-  grid.innerHTML = '';
-  snap.docs.forEach(d => grid.appendChild(projectCard(d.data())));
 }
 
 function newsCard(item, active) {
@@ -171,7 +136,7 @@ async function main() {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     await renderProfile(db);
-    await renderProjects(db);
+    // Projects intentionally stay as the original HTML design because it looks better and has the most accurate content.
     await renderNews(db);
     await renderCerts(db);
   } catch (err) {
