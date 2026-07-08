@@ -1,10 +1,11 @@
 export const firebaseConfig = {
-  apiKey: "PASTE_FIREBASE_API_KEY_HERE",
-  authDomain: "PASTE_FIREBASE_AUTH_DOMAIN_HERE",
-  projectId: "PASTE_FIREBASE_PROJECT_ID_HERE",
-  storageBucket: "PASTE_FIREBASE_STORAGE_BUCKET_HERE",
-  messagingSenderId: "PASTE_FIREBASE_MESSAGING_SENDER_ID_HERE",
-  appId: "PASTE_FIREBASE_APP_ID_HERE"
+  apiKey: "AIzaSyA8UDU7Qzvt0cDceX7PUye3vWMP_89zg2Q",
+  authDomain: "webprofile-194ec.firebaseapp.com",
+  projectId: "webprofile-194ec",
+  storageBucket: "webprofile-194ec.firebasestorage.app",
+  messagingSenderId: "242697286926",
+  appId: "1:242697286926:web:b691a7573f45289130935f",
+  measurementId: "G-RXD6YNS4MT"
 };
 
 export const adminEmail = "bfirstkok@gmail.com";
