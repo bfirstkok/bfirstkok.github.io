@@ -18,19 +18,53 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Insert CMS renderer script
+      - name: Insert CMS scripts
         run: |
           python <<'PY'
           from pathlib import Path
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
-          script = '  <script type="module" src="assets/cms-render.js"></script>\n'
+          cms_script = '  <script type="module" src="assets/cms-render.js"></script>\n'
+          slider_script = '''  <script>
+    window.addEventListener('load', function () {
+      function setupSlider(listSelector, itemSelector, prevId, nextId, countId) {
+        const list = document.querySelector(listSelector);
+        const prev = document.getElementById(prevId);
+        const next = document.getElementById(nextId);
+        const count = document.getElementById(countId);
+        if (!list) return;
+        let index = 0;
+        function slides() { return Array.from(document.querySelectorAll(listSelector + ' ' + itemSelector)); }
+        function show(n) {
+          const all = slides();
+          if (!all.length) return;
+          index = (n + all.length) % all.length;
+          all.forEach(function (slide, i) { slide.classList.toggle('active', i === index); });
+          if (count) count.textContent = (index + 1) + ' / ' + all.length;
+        }
+        if (prev) prev.onclick = function (e) { e.preventDefault(); show(index - 1); };
+        if (next) next.onclick = function (e) { e.preventDefault(); show(index + 1); };
+        show(0);
+      }
+      setTimeout(function () {
+        setupSlider('.news-list', '.news-item', 'newsPrev', 'newsNext', 'newsCount');
+        setupSlider('.cert-grid', '.cert-card', 'certPrev', 'certNext', 'certCount');
+      }, 1800);
+    });
+  </script>
+'''
+          changed = False
           if 'assets/cms-render.js' not in html:
-              html = html.replace('</body>', script + '</body>')
+              html = html.replace('</body>', cms_script + '</body>')
+              changed = True
+          if 'setupSlider(listSelector, itemSelector, prevId, nextId, countId)' not in html:
+              html = html.replace('</body>', slider_script + '</body>')
+              changed = True
+          if changed:
               path.write_text(html, encoding='utf-8')
-              print('Inserted CMS renderer')
+              print('Inserted CMS slider scripts')
           else:
-              print('CMS renderer already exists')
+              print('CMS scripts already exist')
           PY
       - name: Commit changes
         run: |
@@ -40,6 +74,6 @@ jobs:
             echo "No changes to commit"
           else
             git add index.html
-            git commit -m "Enable Firebase CMS renderer"
+            git commit -m "Fix CMS sliders"
             git push
           fi
