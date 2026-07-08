@@ -1,0 +1,45 @@
+name: Enable CMS renderer
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/enable-cms-render.yml'
+      - 'assets/cms-render.js'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Insert CMS renderer script
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          script = '  <script type="module" src="assets/cms-render.js"></script>\n'
+          if 'assets/cms-render.js' not in html:
+              html = html.replace('</body>', script + '</body>')
+              path.write_text(html, encoding='utf-8')
+              print('Inserted CMS renderer')
+          else:
+              print('CMS renderer already exists')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add index.html
+            git commit -m "Enable Firebase CMS renderer"
+            git push
+          fi
