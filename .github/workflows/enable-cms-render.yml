@@ -9,6 +9,8 @@ on:
       - '.github/workflows/enable-cms-render.yml'
       - 'assets/cms-render.js'
       - 'assets/cms-pages.js'
+      - 'assets/extra-admin.js'
+      - 'assets/extra-cms-render.js'
 
 permissions:
   contents: write
@@ -39,11 +41,9 @@ jobs:
               else:
                   print('already patched', file_name)
 
-          insert_before_body(
-              'index.html',
-              'assets/cms-render.js',
-              '  <script type="module" src="assets/cms-render.js"></script>\n'
-          )
+          insert_before_body('index.html', 'assets/cms-render.js', '  <script type="module" src="assets/cms-render.js"></script>\n')
+          insert_before_body('index.html', 'assets/extra-cms-render.js', '  <script type="module" src="assets/extra-cms-render.js"></script>\n')
+          insert_before_body('admin.html', 'assets/extra-admin.js', '  <script type="module" src="assets/extra-admin.js"></script>\n')
 
           slider_marker = 'setupSlider(listSelector, itemSelector, prevId, nextId, countId)'
           slider_script = '''  <script>
@@ -90,7 +90,7 @@ jobs:
           if git diff --quiet; then
             echo "No changes to commit"
           else
-            git add index.html news.html certificates.html
-            git commit -m "Connect CMS pages"
+            git add index.html admin.html news.html certificates.html
+            git commit -m "Connect extended CMS editors"
             git push
           fi
