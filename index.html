@@ -1095,6 +1095,54 @@
     }
 
     /* ========== PORTFOLIO SECTION ========== */
+    .soft-skill-shell{overflow:hidden}
+    .soft-skill-filters{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 26px}
+    .soft-filter-btn{
+      display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:8px 14px;
+      border:1px solid rgba(148,163,184,.28);border-radius:999px;color:#dbeafe;
+      background:rgba(15,23,42,.74);font:inherit;font-size:13px;font-weight:700;
+      cursor:pointer;transition:.22s ease
+    }
+    .soft-filter-btn:hover,.soft-filter-btn.active{
+      color:#04131b;border-color:var(--primary);background:linear-gradient(135deg,#22d3ee,#38bdf8);
+      transform:translateY(-1px)
+    }
+    .soft-filter-count{
+      min-width:22px;padding:2px 6px;border-radius:999px;color:#a5f3fc;
+      background:rgba(34,211,238,.12);text-align:center;font-size:11px
+    }
+    .soft-filter-btn.active .soft-filter-count{color:#e0f2fe;background:rgba(3,17,25,.25)}
+    .soft-skill-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .soft-skill-card{
+      min-width:0;overflow:hidden;border:1px solid rgba(148,163,184,.25);border-radius:16px;
+      background:rgba(8,13,23,.88);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease
+    }
+    .soft-skill-card:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.7);box-shadow:0 18px 35px rgba(0,0,0,.28)}
+    .soft-skill-card.filtered-out{display:none}
+    .soft-skill-visual{
+      min-height:164px;display:grid;place-items:center;gap:10px;padding:28px 20px;text-align:center;color:#fff;
+      background:linear-gradient(135deg,var(--soft-color,#0284c7),color-mix(in srgb,var(--soft-color,#0284c7) 58%,#172554))
+    }
+    .soft-skill-star{
+      width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.28);
+      border-radius:50%;background:rgba(2,6,23,.18);font-size:17px
+    }
+    .soft-skill-visual strong{font-size:14px;line-height:1.45}
+    .soft-skill-body{padding:18px}
+    .soft-skill-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .soft-skill-head h3{margin:0;color:#fff;font-size:17px;line-height:1.45}
+    .soft-level{
+      flex:0 0 auto;padding:4px 8px;border:1px solid rgba(34,197,94,.55);border-radius:999px;
+      color:#86efac;background:rgba(34,197,94,.1);font-size:10px
+    }
+    .soft-level.growing{color:#93c5fd;border-color:rgba(59,130,246,.55);background:rgba(59,130,246,.1)}
+    .soft-level.practice{color:#fde68a;border-color:rgba(245,158,11,.48);background:rgba(245,158,11,.09)}
+    .soft-skill-body p{min-height:66px;margin:10px 0 14px;color:var(--muted);font-size:13px;line-height:1.75}
+    .soft-skill-tag{
+      display:inline-flex;padding:5px 9px;border:1px solid color-mix(in srgb,var(--soft-color,#0284c7) 75%,white);
+      border-radius:6px;color:#e0f2fe;background:color-mix(in srgb,var(--soft-color,#0284c7) 15%,transparent);font-size:11px
+    }
+
     .portfolio-filter-row{
       display:flex;
       flex-wrap:wrap;
@@ -1823,6 +1871,7 @@
     }
 
     @media (max-width: 900px){
+      .soft-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .about-grid,
       .resume-grid,
       .education-grid,
@@ -1926,6 +1975,8 @@
     }
 
     @media (max-width: 640px){
+      .soft-skill-grid{grid-template-columns:1fr}
+      .soft-skill-visual{min-height:132px}
       .section{
         padding:72px 16px;
       }
@@ -2225,6 +2276,7 @@
   <nav class="dock" aria-label="Navigation dock">
     <a class="pbtn home active" href="#top" title="Home"><i class="bi bi-house-door"></i></a>
     <a class="pbtn" href="#about" title="About"><i class="bi bi-person"></i></a>
+    <a class="pbtn" href="#soft-skills" title="Soft Skills"><i class="bi bi-stars"></i></a>
     <a class="pbtn" href="#updates" title="News"><i class="bi bi-megaphone"></i></a>
     <a class="pbtn" href="#certificates" title="Certificates"><i class="bi bi-award"></i></a>
     <a class="pbtn" href="#experience" title="Experience"><i class="bi bi-briefcase"></i></a>
@@ -2410,6 +2462,51 @@
             </ul>
 
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="soft-skills" class="section reveal" aria-labelledby="soft-skills-title">
+    <div class="container">
+      <div class="card soft-skill-shell">
+        <h2 id="soft-skills-title" class="section-title">Soft Skill</h2>
+        <p class="section-sub">ทักษะการทำงานร่วมกับผู้อื่น การแก้ปัญหา และแนวคิดที่ใช้พัฒนาโปรเจกต์จริง</p>
+
+        <div class="soft-skill-filters" aria-label="ตัวกรอง Soft Skill">
+          <button class="soft-filter-btn active" type="button" data-soft-filter="all">All <span class="soft-filter-count">0</span></button>
+          <button class="soft-filter-btn" type="button" data-soft-filter="communication">Communication <span class="soft-filter-count">0</span></button>
+          <button class="soft-filter-btn" type="button" data-soft-filter="teamwork">Teamwork <span class="soft-filter-count">0</span></button>
+          <button class="soft-filter-btn" type="button" data-soft-filter="problem-solving">Problem Solving <span class="soft-filter-count">0</span></button>
+          <button class="soft-filter-btn" type="button" data-soft-filter="leadership">Leadership <span class="soft-filter-count">0</span></button>
+          <button class="soft-filter-btn" type="button" data-soft-filter="hobby">Hobby <span class="soft-filter-count">0</span></button>
+        </div>
+
+        <div class="soft-skill-grid">
+          <article class="soft-skill-card" data-soft-category="communication" style="--soft-color:#0284c7">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Stakeholder Communication</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Clear Communication</h3><span class="soft-level">Strong</span></div><p>สื่อสารความต้องการและรายละเอียดงานกับทีม ผู้สอน และผู้ใช้งานให้เข้าใจตรงกัน</p><span class="soft-skill-tag">Communication</span></div>
+          </article>
+          <article class="soft-skill-card" data-soft-category="teamwork" style="--soft-color:#0891b2">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Git Workflow</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Team Collaboration</h3><span class="soft-level">Strong</span></div><p>ทำงานร่วมกับทีมผ่าน Git/GitHub แบ่งงาน ติดตามความคืบหน้า และรวมงานอย่างเป็นระบบ</p><span class="soft-skill-tag">Teamwork</span></div>
+          </article>
+          <article class="soft-skill-card" data-soft-category="problem-solving" style="--soft-color:#1d4ed8">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Solution Architecture</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Problem Solving Mindset</h3><span class="soft-level">Strong</span></div><p>แยกปัญหาเป็นส่วนย่อย ทดลองหลายแนวทาง และออกแบบวิธีแก้ที่นำไปใช้งานได้จริง</p><span class="soft-skill-tag">Problem Solving</span></div>
+          </article>
+          <article class="soft-skill-card" data-soft-category="leadership" style="--soft-color:#4338ca">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Project Leadership</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Ownership &amp; Initiative</h3><span class="soft-level growing">Growing</span></div><p>เริ่มต้นโปรเจกต์จากไอเดีย วางโครงสร้าง ตัดสินใจ และรับผิดชอบให้งานไปถึงจุดที่ใช้งานได้</p><span class="soft-skill-tag">Leadership</span></div>
+          </article>
+          <article class="soft-skill-card" data-soft-category="teamwork" style="--soft-color:#06b6d4">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Cross-Functional Work</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Adaptability</h3><span class="soft-level growing">Growing</span></div><p>ปรับตัวระหว่างงาน Web, IoT, Database และ AI พร้อมเรียนรู้เครื่องมือที่โปรเจกต์ต้องใช้</p><span class="soft-skill-tag">Adaptability</span></div>
+          </article>
+          <article class="soft-skill-card" data-soft-category="hobby" style="--soft-color:#db2777">
+            <div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>Strategy &amp; Creativity</strong></div>
+            <div class="soft-skill-body"><div class="soft-skill-head"><h3>Gaming &amp; Creative Thinking</h3><span class="soft-level practice">Practice</span></div><p>งานอดิเรกช่วยฝึกการวางแผน การตัดสินใจ และต่อยอดไอเดียสร้างสรรค์ให้กับงานออกแบบ</p><span class="soft-skill-tag">Hobby</span></div>
+          </article>
         </div>
       </div>
     </div>
@@ -3872,6 +3969,51 @@
     }
 
     setupPortfolioFilters();
+
+    // ====== SOFT SKILL FILTERS ======
+    function setupSoftSkillFilters() {
+      const grid = document.querySelector('.soft-skill-grid');
+      const buttons = Array.from(document.querySelectorAll('[data-soft-filter]'));
+      if (!grid || !buttons.length) return;
+
+      let activeFilter = 'all';
+
+      function refresh() {
+        const cards = Array.from(grid.querySelectorAll('.soft-skill-card'));
+        buttons.forEach(button => {
+          const filter = button.dataset.softFilter;
+          const total = filter === 'all'
+            ? cards.length
+            : cards.filter(card => card.dataset.softCategory === filter).length;
+          const count = button.querySelector('.soft-filter-count');
+          if (count) count.textContent = total;
+        });
+
+        cards.forEach(card => {
+          const visible = activeFilter === 'all' || card.dataset.softCategory === activeFilter;
+          card.classList.toggle('filtered-out', !visible);
+          card.setAttribute('aria-hidden', String(!visible));
+        });
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.softFilter;
+          buttons.forEach(candidate => {
+            const active = candidate === button;
+            candidate.classList.toggle('active', active);
+            candidate.setAttribute('aria-pressed', String(active));
+          });
+          refresh();
+        });
+      });
+
+      new MutationObserver(refresh).observe(grid, { childList:true });
+      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.classList.contains('active'))));
+      refresh();
+    }
+
+    setupSoftSkillFilters();
 
     // ====== FAQ CHATBOT LOGIC ======
     const faqDatabase = {

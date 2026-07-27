@@ -4,7 +4,13 @@ import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy } from '
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const esc = (v = '') => String(v).replace(/[<>]/g, '');
+const esc = (v = '') => String(v)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&#039;');
+const safeColor = (value = '') => /^#[0-9a-f]{6}$/i.test(value) ? value : '#0284c7';
 
 async function readSite(name) {
   const snap = await getDoc(doc(db, 'site', name));
@@ -21,6 +27,8 @@ async function renderSections() {
   if (!s) return;
   setText('#skills-title', s.skillsTitle);
   setText('#skills-title + .section-sub', s.skillsSub);
+  setText('#soft-skills-title', s.softSkillsTitle);
+  setText('#soft-skills-title + .section-sub', s.softSkillsSub);
   setText('#experience-title', s.experienceTitle);
   setText('#experience-title + .section-sub', s.experienceSub);
   setText('#resume-title', s.educationTitle);
@@ -63,7 +71,23 @@ async function renderPortfolioWorks() {
   const data = await readSite('portfolioWorks');
   const grid = document.querySelector('.portfolio-works-grid');
   if (!data || !grid || !Array.isArray(data.rows)) return;
-  grid.innerHTML = data.rows.map(item => `<a class="portfolio-link reveal show" href="${esc(item.url || '#')}" target="_blank" rel="noopener noreferrer"><div class="portfolio-item"><div class="portfolio-arrow"><i class="bi bi-arrow-up-right"></i></div><div class="portfolio-icon">${esc(item.icon || '🌐')}</div><div class="portfolio-content"><h3 class="portfolio-title">${esc(item.title)}</h3><p class="portfolio-desc">${esc(item.desc)}</p><div class="portfolio-features">${(item.tags || []).map(t => `<span class="feature-tag">${esc(t)}</span>`).join('')}</div></div></div></a>`).join('');
+  grid.innerHTML = data.rows.map(item => {
+    const categories = Array.isArray(item.categories) ? item.categories.join(' ') : 'web-app';
+    const preview = item.imageUrl
+      ? `<img src="${esc(item.imageUrl)}" alt="${esc(item.title)} preview" loading="lazy">`
+      : esc(item.icon || '🌐');
+    return `<a class="portfolio-link reveal show" data-categories="${esc(categories)}" href="${esc(item.url || '#')}" target="_blank" rel="noopener noreferrer"><div class="portfolio-item"><div class="portfolio-arrow"><i class="bi bi-arrow-up-right"></i></div><div class="portfolio-icon">${preview}</div><div class="portfolio-content"><h3 class="portfolio-title">${esc(item.title)}</h3><p class="portfolio-desc">${esc(item.desc)}</p><div class="portfolio-features">${(item.tags || []).map(t => `<span class="feature-tag">${esc(t)}</span>`).join('')}</div></div></div></a>`;
+  }).join('');
+}
+
+async function renderSoftSkills() {
+  const data = await readSite('softSkills');
+  const grid = document.querySelector('.soft-skill-grid');
+  if (!data || !grid || !Array.isArray(data.rows)) return;
+  grid.innerHTML = data.rows.map(item => {
+    const level = ['Strong', 'Growing', 'Practice'].includes(item.level) ? item.level : 'Growing';
+    return `<article class="soft-skill-card" data-soft-category="${esc(item.category || 'communication')}" style="--soft-color:${safeColor(item.color)}"><div class="soft-skill-visual"><span class="soft-skill-star"><i class="bi bi-star-fill"></i></span><strong>${esc(item.visualTitle || item.title)}</strong></div><div class="soft-skill-body"><div class="soft-skill-head"><h3>${esc(item.title)}</h3><span class="soft-level ${level.toLowerCase()}">${esc(level)}</span></div><p>${esc(item.description)}</p><span class="soft-skill-tag">${esc(item.tag || item.category)}</span></div></article>`;
+  }).join('');
 }
 
 async function renderContactHighlights() {
@@ -81,6 +105,7 @@ async function main() {
     await renderEducation();
     await renderExperience();
     await renderProjects();
+    await renderSoftSkills();
     await renderPortfolioWorks();
     await renderContactHighlights();
   } catch (err) {

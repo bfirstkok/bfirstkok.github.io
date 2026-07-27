@@ -80,8 +80,6 @@ async function loadProfile() {
   $('profileName').value = data.name || 'Khanathippakorn Namthachak';
   $('profileSubtitle').value = data.subtitle || 'Computer Engineering Student · Full-Stack Web Developer · IoT & AI Builder · Cybersecurity Learner';
   $('profileLead').value = data.lead || 'นักศึกษาวิศวกรรมคอมพิวเตอร์ มทร.อีสาน วิทยาเขตขอนแก่น โฟกัสงาน Full-Stack Web, IoT, AI, Cybersecurity และการออกแบบระบบที่เชื่อมโยงซอฟต์แวร์ ฮาร์ดแวร์ ข้อมูล และผู้ใช้งานจริงเข้าด้วยกัน';
-  $('profileAbout1').value = data.about1 || 'ฉันชื่อ First หรือ Khanathippakorn Namthachak สนใจการพัฒนาเว็บแอป ระบบหลังบ้าน ฐานข้อมูล IoT และ AI มีประสบการณ์ทำโปรเจกต์จริง เช่น ระบบคิวโรงพยาบาล, เว็บพอร์ตโฟลิโอ, เว็บแอปจัดการข้อมูล, IoT Dashboard รวมถึงการ deploy เว็บไซต์ด้วย GitHub Pages, Firebase, Vercel และ Netlify';
-  $('profileAbout2').value = data.about2 || 'กำลังต่อยอดทักษะด้าน Cybersecurity, Docker, Flutter, Django, REST API และ Local AI Assistant จุดแข็งคือชอบลงมือทำจริง แก้ปัญหาเร็ว ทดสอบระบบเอง และพัฒนาโปรเจกต์จากไอเดียให้กลายเป็นงานที่ใช้งานได้จริง';
   $('profilePhone').value = data.phone || '0956734701';
   $('profileEmail').value = data.email || 'bfirstkok@gmail.com';
   $('profileAltEmail').value = data.altEmail || 'khanathippakorn@gmail.com';
@@ -90,7 +88,6 @@ async function loadProfile() {
   $('profileWebsite').value = data.websiteUrl || 'https://bfirstkok.me/';
   $('profileFacebook').value = data.facebookUrl || 'https://www.facebook.com/khanathippakorn.namthachak';
   $('profileFooter').value = data.footer || '© 2026 Khanathippakorn Namthachak (First) · bfirstkok.me Portfolio';
-  $('profileSkills').value = (data.skills || ['Full-Stack Web','IoT / ESP32','AI Integration','Cybersecurity','Django / Python','React / Next.js','Docker','MySQL / MariaDB']).join(', ');
 }
 
 $('profileForm').addEventListener('submit', async (e) => {
@@ -101,8 +98,6 @@ $('profileForm').addEventListener('submit', async (e) => {
       name: $('profileName').value.trim(),
       subtitle: $('profileSubtitle').value.trim(),
       lead: $('profileLead').value.trim(),
-      about1: $('profileAbout1').value.trim(),
-      about2: $('profileAbout2').value.trim(),
       phone: $('profilePhone').value.trim(),
       email: $('profileEmail').value.trim(),
       altEmail: $('profileAltEmail').value.trim(),
@@ -111,7 +106,6 @@ $('profileForm').addEventListener('submit', async (e) => {
       websiteUrl: $('profileWebsite').value.trim(),
       facebookUrl: $('profileFacebook').value.trim(),
       footer: $('profileFooter').value.trim(),
-      skills: tagsFromInput($('profileSkills').value),
       updatedAt: serverTimestamp()
     }, { merge: true });
     setStatus('บันทึกโปรไฟล์แล้ว', 'ok');
