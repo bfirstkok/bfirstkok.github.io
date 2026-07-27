@@ -596,6 +596,59 @@
       gap:8px;
     }
 
+    .about-skill-summary{
+      margin-bottom:18px;
+      padding:16px;
+      border:1px solid rgba(0,229,255,.14);
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(0,229,255,.07), rgba(124,58,237,.05));
+    }
+
+    .about-skill-heading{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin:0 0 12px;
+      color:#fff;
+      font-size:17px;
+      font-weight:700;
+    }
+
+    .about-skill-heading i{
+      color:var(--primary);
+    }
+
+    .about-skill-groups{
+      display:grid;
+      gap:9px;
+    }
+
+    .about-skill-group{
+      display:grid;
+      grid-template-columns:105px minmax(0,1fr);
+      gap:10px;
+      align-items:start;
+      padding-top:9px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .about-skill-group:first-child{
+      padding-top:0;
+      border-top:0;
+    }
+
+    .about-skill-label{
+      color:var(--primary);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .about-skill-values{
+      color:#dbe5f0;
+      font-size:13px;
+      line-height:1.65;
+    }
+
     .pill-row{
       display:grid;
       grid-template-columns:repeat(2, 1fr);
@@ -1801,6 +1854,11 @@
         grid-template-columns:1fr;
       }
 
+      .about-skill-group{
+        grid-template-columns:1fr;
+        gap:3px;
+      }
+
       .hero-inner{
         padding:24px 18px;
       }
@@ -2082,7 +2140,6 @@
     <a class="pbtn" href="#about" title="About"><i class="bi bi-person"></i></a>
     <a class="pbtn" href="#updates" title="News"><i class="bi bi-megaphone"></i></a>
     <a class="pbtn" href="#certificates" title="Certificates"><i class="bi bi-award"></i></a>
-    <a class="pbtn" href="#skills" title="Skills"><i class="bi bi-stars"></i></a>
     <a class="pbtn" href="#resume" title="Education"><i class="bi bi-mortarboard"></i></a>
     <a class="pbtn" href="#experience" title="Experience"><i class="bi bi-briefcase"></i></a>
     <a class="pbtn" href="#portfolio" title="Completed Work"><i class="bi bi-grid-3x3-gap"></i></a>
@@ -2221,16 +2278,25 @@
           </div>
 
           <div class="about-body">
-            <p>
-              ฉันชื่อ First หรือ Khanathippakorn Namthachak สนใจการพัฒนาเว็บแอป ระบบหลังบ้าน ฐานข้อมูล IoT และ AI
-              มีประสบการณ์ทำโปรเจกต์จริง เช่น ระบบคิวโรงพยาบาล, เว็บพอร์ตโฟลิโอ, เว็บแอปจัดการข้อมูล, IoT Dashboard
-              รวมถึงการ deploy เว็บไซต์ด้วย GitHub Pages, Firebase, Vercel และ Netlify
-            </p>
-
-            <p>
-              กำลังต่อยอดทักษะด้าน Cybersecurity, Docker, Flutter, Django, REST API และ Local AI Assistant
-              จุดแข็งคือชอบลงมือทำจริง แก้ปัญหาเร็ว ทดสอบระบบเอง และพัฒนาโปรเจกต์จากไอเดียให้กลายเป็นงานที่ใช้งานได้จริง
-            </p>
+            <div class="about-skill-summary" aria-labelledby="about-skill-title">
+              <h3 id="about-skill-title" class="about-skill-heading">
+                <i class="bi bi-stars"></i> ทักษะ
+              </h3>
+              <div class="about-skill-groups">
+                <div class="about-skill-group">
+                  <span class="about-skill-label">ภาษาโปรแกรม</span>
+                  <span class="about-skill-values">Python · JavaScript · Java · HTML/CSS · SQL · C/C++</span>
+                </div>
+                <div class="about-skill-group">
+                  <span class="about-skill-label">Framework / Tools</span>
+                  <span class="about-skill-values">Django · React / Next.js · Node.js · Flutter · Docker · Git</span>
+                </div>
+                <div class="about-skill-group">
+                  <span class="about-skill-label">IoT / Database</span>
+                  <span class="about-skill-values">ESP32 · Arduino · REST API · MySQL / MariaDB · SQLite</span>
+                </div>
+              </div>
+            </div>
 
             <ul class="about-facts">
               <li><i class="bi bi-telephone"></i> โทร: 0956734701</li>
@@ -2242,16 +2308,6 @@
               <li><i class="bi bi-facebook"></i> Facebook: <a href="https://www.facebook.com/khanathippakorn.namthachak" target="_blank" rel="noopener">Khanathippakorn Namthachak</a></li>
             </ul>
 
-            <div class="about-skills" aria-label="skill chips">
-              <span class="chip primary">Full-Stack Web</span>
-              <span class="chip">IoT / ESP32</span>
-              <span class="chip">AI Integration</span>
-              <span class="chip">Cybersecurity</span>
-              <span class="chip">Django / Python</span>
-              <span class="chip">React / Next.js</span>
-              <span class="chip">Docker</span>
-              <span class="chip">MySQL / MariaDB</span>
-            </div>
           </div>
         </div>
       </div>
@@ -2470,7 +2526,7 @@
     </div>
   </section>
 
-  <section id="skills" class="section reveal" aria-labelledby="skills-title">
+  <section id="skills" class="section reveal" aria-labelledby="skills-title" hidden aria-hidden="true">
     <div class="container">
       <div class="card">
         <h2 id="skills-title" class="section-title">ทักษะ</h2>
