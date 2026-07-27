@@ -1095,11 +1095,56 @@
     }
 
     /* ========== PORTFOLIO SECTION ========== */
+    .portfolio-filter-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:18px 0 24px;
+    }
+
+    .portfolio-filter-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      min-height:34px;
+      padding:6px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      color:#cbd5e1;
+      background:rgba(255,255,255,.025);
+      font:600 12px 'Prompt',sans-serif;
+      cursor:pointer;
+    }
+
+    .portfolio-filter-btn:hover,
+    .portfolio-filter-btn.active{
+      color:#041019;
+      border-color:var(--primary);
+      background:var(--primary);
+      transform:translateY(-1px);
+    }
+
+    .portfolio-filter-count{
+      display:inline-grid;
+      place-items:center;
+      min-width:20px;
+      height:20px;
+      padding:0 5px;
+      border-radius:999px;
+      color:inherit;
+      background:rgba(255,255,255,.12);
+      font-size:10px;
+    }
+
+    .portfolio-filter-btn.active .portfolio-filter-count{
+      background:rgba(4,16,25,.14);
+    }
+
     .portfolio-works-grid{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:20px;
-      margin:24px 0;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+      margin:0;
     }
 
     .portfolio-link{
@@ -1108,102 +1153,135 @@
       height:100%;
     }
 
+    .portfolio-link.filtered-out{
+      display:none;
+    }
+
     .portfolio-item{
       display:flex;
       flex-direction:column;
-      gap:16px;
-      padding:24px;
-      background:linear-gradient(135deg, rgba(0,229,255,.08), rgba(124,58,237,.06));
-      border:1px solid rgba(0,229,255,.15);
-      border-radius:20px;
-      backdrop-filter:blur(12px);
-      box-shadow:0 8px 24px rgba(0,0,0,.2);
+      padding:0;
+      background:#0d1522;
+      border:1px solid rgba(148,163,184,.20);
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,.16);
       transition:all var(--transition);
-      min-height:280px;
+      min-height:390px;
       position:relative;
       overflow:hidden;
     }
 
-    .portfolio-item::before{
-      content:"";
+    .portfolio-item::after{
+      content:"Completed";
       position:absolute;
-      inset:0;
-      background:radial-gradient(circle at 100% 0%, rgba(0,229,255,.10), transparent 70%);
-      opacity:0;
-      transition:opacity var(--transition);
+      top:12px;
+      right:12px;
+      z-index:3;
+      padding:4px 8px;
+      border:1px solid rgba(34,197,94,.30);
+      border-radius:999px;
+      color:#7bf1a8;
+      background:rgba(6,78,59,.88);
+      font-size:9px;
+      font-weight:700;
       pointer-events:none;
     }
 
     .portfolio-link:hover .portfolio-item{
-      transform:translateY(-8px);
-      border-color:rgba(0,229,255,.30);
-      box-shadow:0 0 0 1px rgba(0,229,255,.20), 0 16px 36px rgba(0,229,255,.12);
-      background:linear-gradient(135deg, rgba(0,229,255,.14), rgba(124,58,237,.10));
-    }
-
-    .portfolio-link:hover .portfolio-item::before{
-      opacity:1;
+      transform:translateY(-5px);
+      border-color:rgba(0,229,255,.42);
+      box-shadow:0 16px 34px rgba(0,0,0,.34), 0 0 0 1px rgba(0,229,255,.10);
     }
 
     .portfolio-icon{
-      font-size:48px;
+      position:relative;
+      flex:0 0 170px;
+      width:100%;
+      height:170px;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      color:var(--primary);
+      background:
+        radial-gradient(circle at 75% 25%, rgba(0,229,255,.20), transparent 24%),
+        linear-gradient(135deg, #111d2e, #09111c);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:54px;
       line-height:1;
-      margin-bottom:8px;
+    }
+
+    .portfolio-icon img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform var(--transition);
+    }
+
+    .portfolio-link:hover .portfolio-icon img{
+      transform:scale(1.035);
     }
 
     .portfolio-content{
       flex:1;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:9px;
+      padding:14px;
     }
 
     .portfolio-title{
       margin:0;
-      font-size:18px;
+      padding-right:22px;
+      font-size:15px;
       font-weight:700;
       color:#fff;
-      line-height:1.4;
+      line-height:1.45;
     }
 
     .portfolio-desc{
       margin:0;
       color:var(--muted);
-      font-size:14px;
-      line-height:1.6;
+      font-size:11px;
+      line-height:1.65;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
 
     .portfolio-features{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap:5px;
       margin-top:auto;
     }
 
     .feature-tag{
-      font-size:11px;
-      padding:6px 10px;
-      background:rgba(0,229,255,.10);
-      border:1px solid rgba(0,229,255,.20);
+      max-width:100%;
+      padding:4px 7px;
+      background:rgba(0,229,255,.07);
+      border:1px solid rgba(0,229,255,.32);
       border-radius:999px;
       color:var(--primary);
+      font-size:9px;
       font-weight:600;
-      white-space:nowrap;
+      white-space:normal;
     }
 
     .portfolio-arrow{
       position:absolute;
-      top:20px;
-      right:20px;
-      font-size:20px;
+      right:14px;
+      bottom:14px;
+      z-index:2;
+      font-size:15px;
       color:var(--primary);
-      opacity:0.4;
+      opacity:.65;
       transition:all var(--transition);
     }
 
     .portfolio-link:hover .portfolio-arrow{
       opacity:1;
-      transform:translate(4px, -4px);
+      transform:translate(3px, -3px);
     }
 
     .portfolio-cta{
@@ -1572,39 +1650,33 @@
       text-align:center;
     }
 
-    @media (max-width:768px){
+    @media (max-width:1050px){
+      .portfolio-works-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width:700px){
       .portfolio-works-grid{
         grid-template-columns:1fr;
         gap:16px;
       }
 
       .portfolio-item{
-        flex-direction:row;
-        align-items:center;
-        min-height:auto;
-        padding:18px;
+        min-height:370px;
       }
 
       .portfolio-icon{
-        font-size:40px;
-        margin-bottom:0;
-        flex-shrink:0;
-      }
-
-      .portfolio-features{
-        display:none;
+        flex-basis:160px;
+        height:160px;
       }
 
       .portfolio-title{
-        font-size:16px;
+        font-size:15px;
       }
 
       .portfolio-desc{
-        font-size:13px;
-      }
-
-      .portfolio-arrow{
-        display:none;
+        font-size:11px;
       }
     }
 
@@ -3087,10 +3159,19 @@
         <h2 id="portfolio-title" class="section-title">ผลงานที่สมบูรณ์</h2>
         <p class="section-sub">เว็บไซต์และแอปพลิเคชันที่สำเร็จและใช้งานได้จริง</p>
 
+        <div class="portfolio-filter-row" aria-label="ตัวกรองผลงาน">
+          <button class="portfolio-filter-btn active" type="button" data-portfolio-filter="all">All <span class="portfolio-filter-count">0</span></button>
+          <button class="portfolio-filter-btn" type="button" data-portfolio-filter="full-stack">Full-Stack <span class="portfolio-filter-count">0</span></button>
+          <button class="portfolio-filter-btn" type="button" data-portfolio-filter="web-app">Web App <span class="portfolio-filter-count">0</span></button>
+          <button class="portfolio-filter-btn" type="button" data-portfolio-filter="university">University <span class="portfolio-filter-count">0</span></button>
+          <button class="portfolio-filter-btn" type="button" data-portfolio-filter="tools">Tools <span class="portfolio-filter-count">0</span></button>
+        </div>
+
         <div class="portfolio-works-grid">
 
                                 <a
               class="portfolio-link reveal"
+              data-categories="full-stack web-app"
               href="https://otoverse.games/"
               target="_blank"
               rel="noopener noreferrer"
@@ -3100,7 +3181,7 @@
                   <i class="bi bi-arrow-up-right"></i>
                 </div>
 
-                <div class="portfolio-icon">🎵</div>
+                <div class="portfolio-icon"><img src="images/otoversenew01.png" alt="OtoVerse website preview" loading="lazy"></div>
 
                 <div class="portfolio-content">
                   <h3 class="portfolio-title">OtoVerse</h3>
@@ -3122,9 +3203,9 @@
             </a>
 
           <!-- Project 1.5: OmyNo Cash Flow -->
-          <a href="https://omynocashflow.web.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link">
+          <a href="https://omynocashflow.web.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link" data-categories="full-stack web-app">
             <div class="portfolio-item">
-              <div class="portfolio-icon"><i class="bi bi-cash-coin"></i></div>
+              <div class="portfolio-icon"><img src="images/omynocashslownew.png" alt="OmyNo Cash Flow website preview" loading="lazy"></div>
               <div class="portfolio-content">
                 <h3 class="portfolio-title">OmyNo Cash Flow</h3>
                 <p class="portfolio-desc">เว็บแอปสำหรับจัดการ statement และ cash flow พร้อม deploy ใช้งานจริงผ่าน Firebase Hosting และมีซอร์สโค้ดบน GitHub</p>
@@ -3140,9 +3221,9 @@
           </a>
 
           <!-- Project 1.6: StoreStokeSystem -->
-          <a href="https://store-stoke-system.vercel.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link">
+          <a href="https://store-stoke-system.vercel.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link" data-categories="full-stack web-app">
             <div class="portfolio-item">
-              <div class="portfolio-icon"><i class="bi bi-box-seam"></i></div>
+              <div class="portfolio-icon">🗃️</div>
               <div class="portfolio-content">
                 <h3 class="portfolio-title">StoreStokeSystem</h3>
                 <p class="portfolio-desc">ระบบจัดการสต๊อกสินค้าในร้าน สำหรับบันทึกข้อมูลสินค้า ตรวจสอบจำนวนคงเหลือ และต่อยอดเป็นระบบหลังบ้านได้</p>
@@ -3158,7 +3239,7 @@
           </a>
           
           <!-- Project 1: History Encyclopedia -->
-          <a href="https://web-history-three.vercel.app/" target="_blank" rel="noopener" class="portfolio-link">
+          <a href="https://web-history-three.vercel.app/" target="_blank" rel="noopener" class="portfolio-link" data-categories="web-app">
             <div class="portfolio-item">
               <div class="portfolio-icon">🏛️</div>
               <div class="portfolio-content">
@@ -3175,7 +3256,7 @@
           </a>
 
           <!-- Project 3: Healthcare System -->
-          <a href="https://hospital.bfirstkok.me/" target="_blank" rel="noopener" class="portfolio-link" title="เปิด Healthcare Management System">
+          <a href="https://hospital.bfirstkok.me/" target="_blank" rel="noopener" class="portfolio-link" data-categories="full-stack web-app" title="เปิด Healthcare Management System">
             <div class="portfolio-item">
               <div class="portfolio-icon">🏥</div>
               <div class="portfolio-content">
@@ -3192,7 +3273,7 @@
           </a>
 
           <!-- Project 3.2: Mechanical Engineering RMUTI -->
-          <a href="https://eme.eng.rmuti.ac.th/#" target="_blank" rel="noopener noreferrer" class="portfolio-link" title="เปิดเว็บไซต์สาขาวิศวกรรมเครื่องกล มทร.อีสาน">
+          <a href="https://eme.eng.rmuti.ac.th/#" target="_blank" rel="noopener noreferrer" class="portfolio-link" data-categories="full-stack university" title="เปิดเว็บไซต์สาขาวิศวกรรมเครื่องกล มทร.อีสาน">
             <div class="portfolio-item">
               <div class="portfolio-icon">⚙️</div>
               <div class="portfolio-content">
@@ -3209,7 +3290,7 @@
           </a>
 
           <!-- Project 3.3: Computer Engineering RMUTI -->
-          <a href="https://ecp.eng.rmuti.ac.th/#" target="_blank" rel="noopener noreferrer" class="portfolio-link" title="เปิดเว็บไซต์สาขาวิศวกรรมคอมพิวเตอร์ มทร.อีสาน">
+          <a href="https://ecp.eng.rmuti.ac.th/#" target="_blank" rel="noopener noreferrer" class="portfolio-link" data-categories="full-stack university" title="เปิดเว็บไซต์สาขาวิศวกรรมคอมพิวเตอร์ มทร.อีสาน">
             <div class="portfolio-item">
               <div class="portfolio-icon">💻</div>
               <div class="portfolio-content">
@@ -3226,9 +3307,9 @@
           </a>
 
           <!-- Project 3.5: Webcam Capture -->
-          <a href="https://capturetests.netlify.app/" target="_blank" rel="noopener" class="portfolio-link">
+          <a href="https://capturetests.netlify.app/" target="_blank" rel="noopener" class="portfolio-link" data-categories="web-app tools">
             <div class="portfolio-item">
-              <div class="portfolio-icon">📸</div>
+              <div class="portfolio-icon"><img src="images/webcam-thumb.svg" alt="Webcam Capture preview" loading="lazy"></div>
               <div class="portfolio-content">
                 <h3 class="portfolio-title">Webcam Capture</h3>
                 <p class="portfolio-desc">เว็บเพจ Static สำหรับถ่ายภาพจากกล้องเว็บแคมแบบเรียลไทม์</p>
@@ -3242,22 +3323,6 @@
             </div>
           </a>
 
-          <!-- Project 4: Community Forum -->
-          <a href="#" target="_blank" rel="noopener" class="portfolio-link" title="Coming Soon">
-            <div class="portfolio-item">
-              <div class="portfolio-icon">💬</div>
-              <div class="portfolio-content">
-                <h3 class="portfolio-title">Dino Forum</h3>
-                <p class="portfolio-desc">แพลตฟอร์มชุมชนสำหรับการแลกเปลี่ยนความคิดเห็นและสนทนา</p>
-                <div class="portfolio-features">
-                  <span class="feature-tag">Django</span>
-                  <span class="feature-tag">Community</span>
-                  <span class="feature-tag">Social</span>
-                </div>
-              </div>
-              <i class="bi bi-arrow-up-right portfolio-arrow"></i>
-            </div>
-          </a>
         </div>
 
         <div class="portfolio-cta" style="margin-top:40px; text-align:center;">
@@ -3741,6 +3806,72 @@
       countId:'certCount',
       limit:4
     });
+
+    // ====== COMPLETED WORK FILTERS ======
+    function setupPortfolioFilters() {
+      const grid = document.querySelector('.portfolio-works-grid');
+      const buttons = Array.from(document.querySelectorAll('[data-portfolio-filter]'));
+      if (!grid || !buttons.length) return;
+
+      let activeFilter = 'all';
+
+      function inferCategories(item) {
+        if (item.dataset.categories) {
+          return item.dataset.categories.split(/\s+/).filter(Boolean);
+        }
+
+        const text = item.textContent.toLowerCase();
+        const categories = ['web-app'];
+        if (/full-stack|react|next|django|firebase|backend|cash flow|healthcare/.test(text)) categories.push('full-stack');
+        if (/rmuti|university|มหาวิทยาลัย|วิศวกรรม/.test(text)) categories.push('university');
+        if (/webcam|media devices|static html|tools/.test(text)) categories.push('tools');
+        item.dataset.categories = [...new Set(categories)].join(' ');
+        return categories;
+      }
+
+      function items() {
+        return Array.from(grid.querySelectorAll('.portfolio-link'));
+      }
+
+      function refresh() {
+        const allItems = items();
+        const categoryMap = new Map(allItems.map(item => [item, inferCategories(item)]));
+
+        buttons.forEach(button => {
+          const filter = button.dataset.portfolioFilter;
+          const total = filter === 'all'
+            ? allItems.length
+            : allItems.filter(item => categoryMap.get(item).includes(filter)).length;
+          const count = button.querySelector('.portfolio-filter-count');
+          if (count) count.textContent = total;
+        });
+
+        allItems.forEach(item => {
+          const visible = activeFilter === 'all' || categoryMap.get(item).includes(activeFilter);
+          item.classList.toggle('filtered-out', !visible);
+          item.setAttribute('aria-hidden', String(!visible));
+        });
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.portfolioFilter;
+          buttons.forEach(candidate => {
+            const active = candidate === button;
+            candidate.classList.toggle('active', active);
+            candidate.setAttribute('aria-pressed', String(active));
+          });
+          refresh();
+        });
+      });
+
+      const observer = new MutationObserver(refresh);
+      observer.observe(grid, { childList:true });
+      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.classList.contains('active'))));
+      refresh();
+    }
+
+    setupPortfolioFilters();
 
     // ====== FAQ CHATBOT LOGIC ======
     const faqDatabase = {
