@@ -598,55 +598,47 @@
 
     .about-skill-summary{
       margin-bottom:18px;
-      padding:16px;
+      padding:18px 20px;
       border:1px solid rgba(0,229,255,.14);
       border-radius:16px;
-      background:linear-gradient(135deg, rgba(0,229,255,.07), rgba(124,58,237,.05));
+      background:rgba(255,255,255,.025);
     }
 
     .about-skill-heading{
-      display:flex;
-      align-items:center;
-      gap:9px;
-      margin:0 0 12px;
+      margin:0 0 15px;
+      padding-bottom:8px;
+      border-bottom:2px solid rgba(0,229,255,.55);
       color:#fff;
-      font-size:17px;
+      font-size:20px;
       font-weight:700;
     }
 
-    .about-skill-heading i{
-      color:var(--primary);
-    }
-
-    .about-skill-groups{
+    .about-skill-list{
       display:grid;
-      gap:9px;
+      gap:14px;
+      margin:0;
     }
 
-    .about-skill-group{
-      display:grid;
-      grid-template-columns:105px minmax(0,1fr);
-      gap:10px;
-      align-items:start;
-      padding-top:9px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-
-    .about-skill-group:first-child{
-      padding-top:0;
-      border-top:0;
-    }
-
-    .about-skill-label{
-      color:var(--primary);
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .about-skill-values{
+    .about-skill-item{
+      margin:0;
       color:#dbe5f0;
       font-size:13px;
-      line-height:1.65;
+      line-height:1.7;
+    }
+
+    .about-skill-item dt{
+      display:inline;
+      color:var(--primary);
+      font-weight:700;
+    }
+
+    .about-skill-item dt::after{
+      content:": ";
+    }
+
+    .about-skill-item dd{
+      display:inline;
+      margin:0;
     }
 
     .pill-row{
@@ -1854,9 +1846,8 @@
         grid-template-columns:1fr;
       }
 
-      .about-skill-group{
-        grid-template-columns:1fr;
-        gap:3px;
+      .about-skill-summary{
+        padding:16px;
       }
 
       .hero-inner{
@@ -2279,23 +2270,37 @@
 
           <div class="about-body">
             <div class="about-skill-summary" aria-labelledby="about-skill-title">
-              <h3 id="about-skill-title" class="about-skill-heading">
-                <i class="bi bi-stars"></i> ทักษะ
-              </h3>
-              <div class="about-skill-groups">
-                <div class="about-skill-group">
-                  <span class="about-skill-label">ภาษาโปรแกรม</span>
-                  <span class="about-skill-values">Python · JavaScript · Java · HTML/CSS · SQL · C/C++</span>
+              <h3 id="about-skill-title" class="about-skill-heading">ทักษะ</h3>
+              <dl class="about-skill-list">
+                <div class="about-skill-item">
+                  <dt>ภาษาโปรแกรม</dt>
+                  <dd>Python, Java, JavaScript, TypeScript, PHP, SQL, C และ C++</dd>
                 </div>
-                <div class="about-skill-group">
-                  <span class="about-skill-label">Framework / Tools</span>
-                  <span class="about-skill-values">Django · React / Next.js · Node.js · Flutter · Docker · Git</span>
+                <div class="about-skill-item">
+                  <dt>เฟรมเวิร์ก / ไลบรารี</dt>
+                  <dd>Django, Next.js, React, Spring Boot, Node.js, Express.js, Bootstrap และ Flutter</dd>
                 </div>
-                <div class="about-skill-group">
-                  <span class="about-skill-label">IoT / Database</span>
-                  <span class="about-skill-values">ESP32 · Arduino · REST API · MySQL / MariaDB · SQLite</span>
+                <div class="about-skill-item">
+                  <dt>เครื่องมือพัฒนา</dt>
+                  <dd>Git, GitHub, VS Code, IntelliJ IDEA, XAMPP, phpMyAdmin, Postman, Docker, Figma, Arduino IDE, Wokwi และ Android Studio</dd>
                 </div>
-              </div>
+                <div class="about-skill-item">
+                  <dt>ฐานข้อมูล / แพลตฟอร์ม</dt>
+                  <dd>SQLite, MySQL, MariaDB, PostgreSQL, CockroachDB และ Firebase</dd>
+                </div>
+                <div class="about-skill-item">
+                  <dt>Cybersecurity / CTF Tools</dt>
+                  <dd>Kali Linux, Nmap, Hydra, Gobuster, ffuf, sqlmap, Nikto, Netcat, cURL, Wget, Whois, Dig, nslookup, ExifTool, Binwalk, Steghide, LinPEAS และ pspy</dd>
+                </div>
+                <div class="about-skill-item">
+                  <dt>IoT / Embedded Systems</dt>
+                  <dd>Arduino, ESP32, HTTP/REST API และ Digital Twin Simulation</dd>
+                </div>
+                <div class="about-skill-item">
+                  <dt>CMS / Local AI Tools</dt>
+                  <dd>WordPress, Moodle และ Ollama</dd>
+                </div>
+              </dl>
             </div>
 
             <ul class="about-facts">
