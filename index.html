@@ -2276,12 +2276,12 @@
   <nav class="dock" aria-label="Navigation dock">
     <a class="pbtn home active" href="#top" title="Home"><i class="bi bi-house-door"></i></a>
     <a class="pbtn" href="#about" title="About"><i class="bi bi-person"></i></a>
-    <a class="pbtn" href="#soft-skills" title="Soft Skills"><i class="bi bi-stars"></i></a>
     <a class="pbtn" href="#updates" title="News"><i class="bi bi-megaphone"></i></a>
     <a class="pbtn" href="#certificates" title="Certificates"><i class="bi bi-award"></i></a>
     <a class="pbtn" href="#experience" title="Experience"><i class="bi bi-briefcase"></i></a>
     <a class="pbtn" href="#resume" title="Education"><i class="bi bi-mortarboard"></i></a>
     <a class="pbtn" href="#portfolio" title="Completed Work"><i class="bi bi-grid-3x3-gap"></i></a>
+    <a class="pbtn" href="#soft-skills" title="Soft Skills"><i class="bi bi-stars"></i></a>
     <a class="pbtn" href="#contact" title="Contact"><i class="bi bi-envelope"></i></a>
   </nav>
 
@@ -3970,7 +3970,13 @@
 
     setupPortfolioFilters();
 
-    // ====== SOFT SKILL FILTERS ======
+    // ====== SOFT SKILL ORDER & FILTERS ======
+    const portfolioSection = document.querySelector('#portfolio');
+    const softSkillsSection = document.querySelector('#soft-skills');
+    if (portfolioSection && softSkillsSection) {
+      portfolioSection.insertAdjacentElement('afterend', softSkillsSection);
+    }
+
     function setupSoftSkillFilters() {
       const grid = document.querySelector('.soft-skill-grid');
       const buttons = Array.from(document.querySelectorAll('[data-soft-filter]'));
