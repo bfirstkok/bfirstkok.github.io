@@ -158,61 +158,98 @@
 
     .music-player{
       position:fixed;
-      left:18px;
-      bottom:18px;
-      width:280px;
-      background:rgba(15,23,42,.90);
+      left:14px;
+      bottom:14px;
+      width:178px;
+      background:rgba(10,16,29,.94);
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:14px;
       backdrop-filter:blur(12px);
       box-shadow:var(--shadow);
-      padding:12px;
+      padding:8px;
       z-index:99;
     }
 
-    .music-player h3{
-      margin:0 0 10px;
-      font-size:12px;
-      color:var(--primary);
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.08em;
+    .music-header{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      min-width:0;
+      margin-bottom:6px;
     }
 
-    .music-player input[type="file"]{
-      width:100%;
-      padding:8px;
-      margin-bottom:8px;
-      background:rgba(255,255,255,.03);
-      border:1px solid var(--line);
+    .music-mark{
+      flex:0 0 24px;
+      width:24px;
+      height:24px;
+      display:grid;
+      place-items:center;
+      border-radius:8px;
+      color:var(--primary);
+      background:rgba(0,229,255,.10);
+      font-size:12px;
+    }
+
+    .music-title{
+      min-width:0;
+      flex:1;
+      margin:0;
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.2;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .music-upload{
+      flex:0 0 24px;
+      width:24px;
+      height:24px;
+      display:grid;
+      place-items:center;
+      border:0;
       border-radius:8px;
       color:var(--muted);
-      font-size:11px;
+      background:rgba(255,255,255,.05);
       cursor:pointer;
+      font-size:11px;
     }
 
+    .music-upload:hover{
+      color:var(--primary);
+      background:rgba(0,229,255,.10);
+    }
+
+    .music-player input[type="file"],
     .music-player audio{
-      width:100%;
-      height:32px;
-      margin-bottom:8px;
+      position:absolute;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+      clip:rect(0 0 0 0);
+      clip-path:inset(50%);
+      white-space:nowrap;
     }
 
     .music-controls{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:4px;
     }
 
     .music-btn{
-      flex:1;
-      min-width:60px;
-      padding:6px 8px;
-      background:rgba(0,229,255,.12);
-      border:1px solid rgba(0,229,255,.20);
-      border-radius:8px;
-      color:var(--primary);
+      min-width:0;
+      height:26px;
+      padding:0;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:7px;
+      color:#cbd5e1;
       cursor:pointer;
-      font-size:11px;
+      font-size:12px;
       font-weight:600;
       transition:all var(--transition);
     }
@@ -230,9 +267,9 @@
 
     @media (max-width: 480px) {
       .music-player{
-        width:calc(100vw - 52px);
-        left:26px;
-        bottom:26px;
+        width:164px;
+        left:10px;
+        bottom:10px;
       }
     }
 
@@ -1685,11 +1722,31 @@
         bottom:14px;
         transform:translateX(-50%);
         grid-auto-flow:column;
+        grid-template-columns:none;
+        gap:6px;
+        width:max-content;
+        max-width:calc(100vw - 24px);
+        overflow-x:auto;
         background:rgba(10,14,24,.82);
         border:1px solid rgba(255,255,255,.08);
-        padding:10px;
-        border-radius:20px;
+        padding:6px;
+        border-radius:16px;
         backdrop-filter:blur(12px);
+        scrollbar-width:none;
+      }
+
+      .dock::-webkit-scrollbar{
+        display:none;
+      }
+
+      .pbtn{
+        width:42px;
+        height:42px;
+        border-radius:12px;
+      }
+
+      .music-player{
+        bottom:76px;
       }
 
       .lang-selector{
@@ -1705,6 +1762,25 @@
     @media (max-width:560px){
       .collab-list{
         grid-template-columns:1fr;
+      }
+
+      .dock{
+        gap:4px;
+      }
+
+      .pbtn{
+        width:38px;
+        height:38px;
+        border-radius:10px;
+        font-size:15px;
+      }
+
+      .chatbot-widget{
+        bottom:76px;
+      }
+
+      footer{
+        padding-bottom:118px;
       }
     }
 
@@ -1987,8 +2063,8 @@
       }
 
       .chatbot-widget{
-        bottom:16px;
-        right:16px;
+        bottom:76px;
+        right:12px;
       }
 
       .chat-toggle-btn{
@@ -2009,22 +2085,26 @@
     <a class="pbtn" href="#skills" title="Skills"><i class="bi bi-stars"></i></a>
     <a class="pbtn" href="#resume" title="Education"><i class="bi bi-mortarboard"></i></a>
     <a class="pbtn" href="#experience" title="Experience"><i class="bi bi-briefcase"></i></a>
-    <a class="pbtn" href="#projects" title="Projects"><i class="bi bi-window"></i></a>
     <a class="pbtn" href="#portfolio" title="Completed Work"><i class="bi bi-grid-3x3-gap"></i></a>
     <a class="pbtn" href="#contact" title="Contact"><i class="bi bi-envelope"></i></a>
   </nav>
 
   <!-- Music Player -->
-  <div class="music-player">
-    <h3>🎵 Music Player</h3>
-    <input type="file" id="audioFile" accept="audio/mp3,audio/mpeg" title="Select MP3 file">
-    <p id="musicTitle" style="margin: 6px 0; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Default: Laibaht BGM ▶️</p>
-    <audio id="audioPlayer" controls></audio>
+  <div class="music-player" aria-label="Mini music player">
+    <div class="music-header">
+      <span class="music-mark" aria-hidden="true"><i class="bi bi-music-note-beamed"></i></span>
+      <p id="musicTitle" class="music-title">Laibaht BGM</p>
+      <label class="music-upload" for="audioFile" title="เลือกไฟล์เพลง" aria-label="เลือกไฟล์เพลง">
+        <i class="bi bi-folder2-open"></i>
+      </label>
+    </div>
+    <input type="file" id="audioFile" accept="audio/mp3,audio/mpeg">
+    <audio id="audioPlayer"></audio>
     <div class="music-controls">
-      <button class="music-btn" id="playBtn" title="Play"><i class="bi bi-play-fill"></i> Play</button>
-      <button class="music-btn" id="pauseBtn" title="Pause"><i class="bi bi-pause-fill"></i> Pause</button>
-      <button class="music-btn" id="nextBtn" title="Next"><i class="bi bi-skip-forward-fill"></i> Next</button>
-      <button class="music-btn" id="stopBtn" title="Stop"><i class="bi bi-stop-fill"></i> Stop</button>
+      <button class="music-btn" id="playBtn" title="เล่น" aria-label="เล่น"><i class="bi bi-play-fill"></i></button>
+      <button class="music-btn" id="pauseBtn" title="หยุดชั่วคราว" aria-label="หยุดชั่วคราว"><i class="bi bi-pause-fill"></i></button>
+      <button class="music-btn" id="nextBtn" title="เพลงถัดไป" aria-label="เพลงถัดไป"><i class="bi bi-skip-forward-fill"></i></button>
+      <button class="music-btn" id="stopBtn" title="หยุด" aria-label="หยุด"><i class="bi bi-stop-fill"></i></button>
     </div>
   </div>
 
@@ -2111,7 +2191,7 @@
       </div>
 
       <div class="cta-row">
-        <a class="pxbtn" href="#projects"><i class="bi bi-kanban"></i> VIEW PROJECTS</a>
+        <a class="pxbtn" href="#portfolio"><i class="bi bi-grid-3x3-gap"></i> VIEW WORK</a>
         <a class="pxbtn alt" href="#about"><i class="bi bi-person-badge"></i> ABOUT ME</a>
       </div>
     </div>
@@ -2447,7 +2527,7 @@
         </div>
 
         <!-- Tech Stack Section -->
-        <div style="margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.1);">
+        <div hidden aria-hidden="true" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.1);">
           <h3 style="font-size:22px; font-weight:700; margin-bottom:20px; color:#fff;">💻 Tech Stack</h3>
           
           <table style="width:100%; margin-top:20px;">
@@ -2700,7 +2780,7 @@
     </div>
   </section>
 
-  <section id="projects" class="section reveal" aria-labelledby="projects-title">
+  <section id="projects" class="section reveal" aria-labelledby="projects-title" hidden aria-hidden="true">
     <div class="container">
       <div class="card">
         <h2 id="projects-title" class="section-title">ผลงานและโครงงาน</h2>
