@@ -1264,6 +1264,7 @@
       position:absolute;
       top:22px;
       left:22px;
+      z-index:2;
       display:grid;
       place-items:center;
       align-content:center;
@@ -1473,6 +1474,10 @@
       box-shadow:var(--glow);
     }
 
+    .cert-card.cert-with-image .cert-icon{
+      display:none;
+    }
+
     .cert-footer{
       display:flex;
       justify-content:space-between;
@@ -1505,6 +1510,16 @@
       align-items:center;
       gap:12px;
       margin-top:16px;
+    }
+
+    .news-nav[hidden],
+    .cert-nav[hidden]{
+      display:none;
+    }
+
+    .news-slider-actions.single-slide,
+    .cert-slider-actions.single-slide{
+      justify-content:flex-end;
     }
 
     .cert-nav{
@@ -2446,9 +2461,9 @@
 
           <div class="news-slider-actions" aria-label="News slider controls">
             <div class="news-nav">
-              <button class="news-arrow" type="button" id="newsPrev" aria-label="Previous news"><i class="bi bi-chevron-left"></i></button>
-              <span class="news-count" id="newsCount">1 / 7</span>
-              <button class="news-arrow" type="button" id="newsNext" aria-label="Next news"><i class="bi bi-chevron-right"></i></button>
+              <button class="news-arrow" type="button" id="newsPrev" aria-label="ข่าวก่อนหน้า"><span aria-hidden="true">‹</span></button>
+              <span class="news-count" id="newsCount" aria-live="polite">1 / 7</span>
+              <button class="news-arrow" type="button" id="newsNext" aria-label="ข่าวถัดไป"><span aria-hidden="true">›</span></button>
             </div>
             <a class="news-more-btn" href="news.html"><i class="bi bi-newspaper"></i> ดูข่าวสารทั้งหมด</a>
           </div>
@@ -2472,7 +2487,7 @@
     <div class="container">
       <div class="card">
         <h2 id="certificates-title" class="section-title">ใบ Certificate</h2>
-        <p class="section-sub">พื้นที่แสดงใบรับรองและหลักฐานการเข้าร่วมอบรม สามารถเปลี่ยนเป็นรูปใบ certificate จริงหรือเพิ่มลิงก์ตรวจสอบได้ภายหลัง</p>
+        <p class="section-sub">ใบรับรองและหลักฐานการเข้าร่วมอบรมที่ได้รับจริง</p>
 
         <div class="cert-grid">
           <article class="cert-card cert-with-image active">
@@ -2488,42 +2503,13 @@
             </div>
           </article>
 
-          <article class="cert-card">
-            <div class="cert-icon"><i class="bi bi-code-square"></i></div>
-            <h3>Web Development Certificate</h3>
-            <p>ใบรับรองหรือหลักฐานการเรียนรู้ด้าน HTML, CSS, JavaScript, React, Django หรือ Web Application Development</p>
-            <div class="cert-footer">
-              <span>Web / Full-Stack</span>
-              <span class="cert-status">พร้อมเพิ่มรูปจริง</span>
-            </div>
-          </article>
-
-          <article class="cert-card">
-            <div class="cert-icon"><i class="bi bi-cpu"></i></div>
-            <h3>IoT & Embedded Systems</h3>
-            <p>ใบรับรองด้าน ESP32, Arduino, Sensor Integration, Embedded Systems หรือการทำโปรเจกต์ IoT</p>
-            <div class="cert-footer">
-              <span>IoT / Hardware</span>
-              <span class="cert-status">รอแนบไฟล์</span>
-            </div>
-          </article>
-
-          <article class="cert-card">
-            <div class="cert-icon"><i class="bi bi-cloud-check"></i></div>
-            <h3>Cloud / Database / Firebase</h3>
-            <p>ใบรับรองด้าน Cloud, Database, Firebase, API หรือระบบ backend ที่เกี่ยวข้องกับการจัดการข้อมูล</p>
-            <div class="cert-footer">
-              <span>Backend / Data</span>
-              <span class="cert-status">รออัปเดต</span>
-            </div>
-          </article>
         </div>
 
         <div class="cert-slider-actions" aria-label="Certificate slider controls">
           <div class="cert-nav">
-            <button class="cert-arrow" type="button" id="certPrev" aria-label="Previous certificate"><i class="bi bi-chevron-left"></i></button>
-            <span class="cert-count" id="certCount">1 / 4</span>
-            <button class="cert-arrow" type="button" id="certNext" aria-label="Next certificate"><i class="bi bi-chevron-right"></i></button>
+            <button class="cert-arrow" type="button" id="certPrev" aria-label="Certificate ก่อนหน้า"><span aria-hidden="true">‹</span></button>
+            <span class="cert-count" id="certCount" aria-live="polite">1 / 1</span>
+            <button class="cert-arrow" type="button" id="certNext" aria-label="Certificate ถัดไป"><span aria-hidden="true">›</span></button>
           </div>
           <a class="cert-more-btn" href="certificates.html"><i class="bi bi-award"></i> ดู Certificate ทั้งหมด</a>
         </div>
@@ -3679,95 +3665,73 @@
       audioPlayer.addEventListener('pause', updateButtonStates);
     });
 
-    // ====== NEWS SLIDER ======
-    const newsList = document.querySelector('.news-list');
-    const newsSlides = Array.from(document.querySelectorAll('.news-list .news-item')).slice(0, 7);
-    const newsPrev = document.getElementById('newsPrev');
-    const newsNext = document.getElementById('newsNext');
-    const newsCount = document.getElementById('newsCount');
-    let newsIndex = 0;
-    let newsTimer = null;
+    // ====== NEWS & CERTIFICATE SLIDERS ======
+    function createContentSlider({ containerSelector, itemSelector, prevId, nextId, countId, limit }) {
+      const container = document.querySelector(containerSelector);
+      const prev = document.getElementById(prevId);
+      const next = document.getElementById(nextId);
+      const count = document.getElementById(countId);
+      const nav = prev?.closest('.news-nav, .cert-nav');
+      const actions = nav?.parentElement;
+      if (!container) return;
 
-    function showNewsSlide(index) {
-      if (!newsSlides.length) return;
-      newsIndex = (index + newsSlides.length) % newsSlides.length;
-      newsSlides.forEach((slide, slideIndex) => {
-        slide.classList.toggle('active', slideIndex === newsIndex);
+      let index = 0;
+
+      function getSlides() {
+        return Array.from(container.querySelectorAll(itemSelector)).slice(0, limit);
+      }
+
+      function show(requestedIndex) {
+        const slides = getSlides();
+        const allItems = Array.from(container.querySelectorAll(itemSelector));
+        if (!slides.length) {
+          if (count) count.textContent = '0 / 0';
+          if (nav) nav.hidden = true;
+          actions?.classList.add('single-slide');
+          return;
+        }
+
+        index = (requestedIndex + slides.length) % slides.length;
+        allItems.forEach((slide, slideIndex) => {
+          const isActive = slideIndex === index && slideIndex < slides.length;
+          slide.classList.toggle('active', isActive);
+          slide.setAttribute('aria-hidden', String(!isActive));
+        });
+
+        if (count) count.textContent = `${index + 1} / ${slides.length}`;
+        const hasMultipleSlides = slides.length > 1;
+        if (nav) nav.hidden = !hasMultipleSlides;
+        actions?.classList.toggle('single-slide', !hasMultipleSlides);
+      }
+
+      prev?.addEventListener('click', () => show(index - 1));
+      next?.addEventListener('click', () => show(index + 1));
+
+      const observer = new MutationObserver(() => {
+        const slides = getSlides();
+        show(Math.min(index, Math.max(slides.length - 1, 0)));
       });
-      if (newsCount) newsCount.textContent = `${newsIndex + 1} / ${newsSlides.length}`;
+      observer.observe(container, { childList:true });
+      show(0);
     }
 
-    function startNewsAutoSlide() {
-      if (newsTimer || newsSlides.length <= 1) return;
-      newsTimer = setInterval(() => showNewsSlide(newsIndex + 1), 5000);
-    }
-
-    function stopNewsAutoSlide() {
-      clearInterval(newsTimer);
-      newsTimer = null;
-    }
-
-    newsPrev?.addEventListener('click', () => {
-      showNewsSlide(newsIndex - 1);
-      stopNewsAutoSlide();
-      startNewsAutoSlide();
+    createContentSlider({
+      containerSelector:'.news-list',
+      itemSelector:'.news-item',
+      prevId:'newsPrev',
+      nextId:'newsNext',
+      countId:'newsCount',
+      limit:7
     });
 
-    newsNext?.addEventListener('click', () => {
-      showNewsSlide(newsIndex + 1);
-      stopNewsAutoSlide();
-      startNewsAutoSlide();
+    createContentSlider({
+      containerSelector:'.cert-grid',
+      itemSelector:'.cert-card',
+      prevId:'certPrev',
+      nextId:'certNext',
+      countId:'certCount',
+      limit:4
     });
-
-    newsList?.addEventListener('mouseenter', stopNewsAutoSlide);
-    newsList?.addEventListener('mouseleave', startNewsAutoSlide);
-    showNewsSlide(0);
-    startNewsAutoSlide();
-
-    // ====== CERTIFICATE SLIDER ======
-    const certGrid = document.querySelector('.cert-grid');
-    const certSlides = Array.from(document.querySelectorAll('.cert-grid .cert-card')).slice(0, 4);
-    const certPrev = document.getElementById('certPrev');
-    const certNext = document.getElementById('certNext');
-    const certCount = document.getElementById('certCount');
-    let certIndex = 0;
-    let certTimer = null;
-
-    function showCertSlide(index) {
-      if (!certSlides.length) return;
-      certIndex = (index + certSlides.length) % certSlides.length;
-      certSlides.forEach((slide, slideIndex) => {
-        slide.classList.toggle('active', slideIndex === certIndex);
-      });
-      if (certCount) certCount.textContent = `${certIndex + 1} / ${certSlides.length}`;
-    }
-
-    function startCertAutoSlide() {
-      if (certTimer || certSlides.length <= 1) return;
-      certTimer = setInterval(() => showCertSlide(certIndex + 1), 5000);
-    }
-
-    function stopCertAutoSlide() {
-      clearInterval(certTimer);
-      certTimer = null;
-    }
-
-    certPrev?.addEventListener('click', () => {
-      showCertSlide(certIndex - 1);
-      stopCertAutoSlide();
-      startCertAutoSlide();
-    });
-
-    certNext?.addEventListener('click', () => {
-      showCertSlide(certIndex + 1);
-      stopCertAutoSlide();
-      startCertAutoSlide();
-    });
-
-    certGrid?.addEventListener('mouseenter', stopCertAutoSlide);
-    certGrid?.addEventListener('mouseleave', startCertAutoSlide);
-    showCertSlide(0);
-    startCertAutoSlide();
 
     // ====== FAQ CHATBOT LOGIC ======
     const faqDatabase = {
@@ -3895,33 +3859,6 @@
     });
   </script>
   <script type="module" src="assets/cms-render.js"></script>
-  <script>
-  window.addEventListener('load', function () {
-    function setupSlider(listSelector, itemSelector, prevId, nextId, countId) {
-      const list = document.querySelector(listSelector);
-      const prev = document.getElementById(prevId);
-      const next = document.getElementById(nextId);
-      const count = document.getElementById(countId);
-      if (!list) return;
-      let index = 0;
-      function slides() { return Array.from(document.querySelectorAll(listSelector + ' ' + itemSelector)); }
-      function show(n) {
-        const all = slides();
-        if (!all.length) return;
-        index = (n + all.length) % all.length;
-        all.forEach(function (slide, i) { slide.classList.toggle('active', i === index); });
-        if (count) count.textContent = (index + 1) + ' / ' + all.length;
-      }
-      if (prev) prev.onclick = function (e) { e.preventDefault(); show(index - 1); };
-      if (next) next.onclick = function (e) { e.preventDefault(); show(index + 1); };
-      show(0);
-    }
-    setTimeout(function () {
-      setupSlider('.news-list', '.news-item', 'newsPrev', 'newsNext', 'newsCount');
-      setupSlider('.cert-grid', '.cert-card', 'certPrev', 'certNext', 'certCount');
-    }, 1800);
-  });
-</script>
   <script type="module" src="assets/extra-cms-render.js"></script>
 </body>
 </html>
